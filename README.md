@@ -165,7 +165,7 @@ dataset    Embedding           NER     RE
 NYT        bert-base-cased     0.9575  0.9242
 WEBNLG     bert-base-cased     0.9803  0.9363
 ACE2005    albert-xxlarge-v1   0.8903  0.6679
-SCIERC     scibert-uncased     0.6682  0.3844
+SCIERC     scibert-uncased     0.6682  0.3842
 
 
 f1 results on ADE:
