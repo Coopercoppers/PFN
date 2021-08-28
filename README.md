@@ -148,7 +148,7 @@ identical with training results under the specified configurations above.
 Due to limited space in google drive, 10-fold model files for ADE are not available.  
 
 After downloading the linked files below, unzip them and put **${data}_test.pt** in the directory of ./save/ before running eval.py.  
-Also, **${data}_test.txt** and **${data}_test.log** recoreds the results of each epoch. You should check that out as well.  
+Also, **${data}_test.txt** and **${data}_test.log** records the results of each epoch. You should check that out as well.  
 
 * [NYT-bert](https://drive.google.com/file/d/1hyLDruvg6qBhveGWZQEzJ9_LCDPbLpLw/view?usp=sharing)
 * [WEBNLG-bert](https://drive.google.com/file/d/1Tdw6TYgVKlKbnbKAXyOPBgWbEeXnim3Q/view?usp=sharing)
