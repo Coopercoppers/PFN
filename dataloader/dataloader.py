@@ -25,6 +25,7 @@ class dataprocess(Dataset):
         sent_str = ' '.join(words)
         bert_words = self.tokenizer.tokenize(sent_str)
         bert_len = len(bert_words) + 2
+        # bert_len = original sentence + [CLS] and [SEP]
 
         word_to_bep = self.map_origin_word_to_bert(words)
         ner_labels = self.ner_label_transform(ner_labels, word_to_bep)
@@ -46,6 +47,7 @@ class dataprocess(Dataset):
         new_ner_labels = []
 
         for i in range(0, len(ner_label), 3):
+            # +1 for [CLS]
             sta = word_to_bert[ner_label[i]][0] + 1
             end = word_to_bert[ner_label[i + 1]][0] + 1
             new_ner_labels += [sta, end, ner_label[i + 2]]
@@ -56,6 +58,7 @@ class dataprocess(Dataset):
         new_rc_labels = []
 
         for i in range(0, len(rc_label), 3):
+            # +1 for [CLS]
             e1 = word_to_bert[rc_label[i]][0] + 1
             e2 = word_to_bert[rc_label[i + 1]][0] + 1
             new_rc_labels += [e1, e2, rc_label[i + 2]]
