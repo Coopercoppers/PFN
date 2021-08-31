@@ -13,6 +13,7 @@ This repository contains codes of the official implementation for the paper [A P
 * [Pre-trained Models and Training Logs](#Pre-trained-Models-and-Training-Logs)
   * [Download Links](#Download-Links)
   * [Result Display](#Result-Display)
+* [Robustness Against Input Perturbation](#Robustness-Against-Input-Perturbation)
 * [Citation](#Citation)
 
 ## Model Overview
@@ -178,6 +179,8 @@ albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.
 
 ```
 
+## Robustness Against Input Perturbation
+Under construction
 
 ## Citation
 Please cite our paper if it's helpful to you in your research.
