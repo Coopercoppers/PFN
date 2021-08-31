@@ -60,23 +60,23 @@ class pfn_unit(nn.Module):
         h_in, c_in = hidden
 
         gates = self.input_transform(x) + self.hidden_transform(h_in)
-        c, mg_in_cin, mg_forget_cin, mg_in_c, mg_forget_c = gates[:, :].chunk(5, 1)
+        c, eg_cin, rg_cin, eg_c, rg_c = gates[:, :].chunk(5, 1)
 
-        mg_in_cin = 1 - cumsoftmax(mg_in_cin)
-        mg_forget_cin = cumsoftmax(mg_forget_cin)
+        eg_cin = 1 - cumsoftmax(eg_cin)
+        rg_cin = cumsoftmax(rg_cin)
 
-        mg_in_c = 1 - cumsoftmax(mg_in_c)
-        mg_forget_c = cumsoftmax(mg_forget_c)
+        eg_c = 1 - cumsoftmax(eg_c)
+        rg_c = cumsoftmax(rg_c)
 
         c = torch.tanh(c)
 
-        overlap_c = mg_forget_c * mg_in_c
-        upper_c = mg_forget_c - overlap_c
-        downer_c = mg_in_c - overlap_c
+        overlap_c = rg_c * eg_c
+        upper_c = rg_c - overlap_c
+        downer_c = eg_c - overlap_c
 
-        overlap_cin = mg_forget_cin * mg_in_cin
-        upper_cin = mg_forget_cin - overlap_cin
-        downer_cin = mg_in_cin - overlap_cin
+        overlap_cin =rg_cin * eg_cin
+        upper_cin = rg_cin - overlap_cin
+        downer_cin = eg_cin - overlap_cin
 
         share = overlap_cin * c_in + overlap_c * c
 
