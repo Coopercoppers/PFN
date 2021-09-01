@@ -183,7 +183,7 @@ albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.
 ![](./fig/robustness.png)
 We use robustness test to evaluate our model under adverse circumstances. In this case, we use the domain transformation methods of NER from [Textflint](https://www.textflint.io/textflint) (transformations of RE are not viable since the input is restricted to  one triple per sentence). Descriptions of the transformation methods, test files and baseline results can be found in their website.  
 
-The test files can also be obtained in the folder of ./robustness_data/. 
+The test files can also be found in the folder of ./robustness_data/. 
 
 
 
