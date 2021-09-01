@@ -180,6 +180,7 @@ albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.
 ```
 
 ## Robustness Against Input Perturbation
+![](./fig/robustness.png)
 Under construction
 
 ## Citation
