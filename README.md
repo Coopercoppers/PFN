@@ -182,11 +182,6 @@ albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.
 ## Robustness Against Input Perturbation
 ![](./fig/robustness.png)
 We use robustness test to evaluate our model under adverse circumstances. In this case, we use the domain transformation methods of NER from [Textflint](https://www.textflint.io/textflint).   
-Transformations of RE are not viable for the following reasons:
-* The input is restricted to one triple per sentence.
-* The methods include entity swap, which is already covered in NER.
-* The methods include relation-specific transformations (Age, Employee, Birth) and ACE05 does not have these type of relations.  
-* The methods include inserting descriptions of entities, which is unfair because it might introduce new entity and relation. 
 
 Descriptions of the transformation methods, test files and baseline results can be found in their website.  
 The test files can also be found in the folder of ./robustness_data/. 
