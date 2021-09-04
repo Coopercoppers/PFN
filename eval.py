@@ -26,6 +26,9 @@ if __name__ == '__main__':
 
     parser.add_argument("--batch_size", default=20, type=int,
                         help="number of samples in one training batch")
+    
+    parser.add_argument("--eval_batch_size", default=10, type=int,
+                        help="number of samples in testing")
 
     parser.add_argument("--eval_metric", default="micro", type=str,
                         help="micro f1 or macro f1")
