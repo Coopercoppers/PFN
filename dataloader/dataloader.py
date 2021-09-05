@@ -5,8 +5,9 @@ from torch.utils.data import Dataset,DataLoader
 import random
 
 class dataprocess(Dataset):
-    def __init__(self, data, embed_mode):
+    def __init__(self, data, embed_mode, max_seq_len):
         self.data = data
+        self.len = max_seq_len
         if embed_mode == "albert":
             self.tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
         elif embed_mode == "bert_cased":
@@ -21,6 +22,9 @@ class dataprocess(Dataset):
         words = self.data[idx][0]
         ner_labels = self.data[idx][1]
         rc_labels = self.data[idx][2]
+        
+        if len(words) > self.len:
+            words, ner_labels, rc_labels = self.truncate(self.len, words, ner_labels, rc_labels)
 
         sent_str = ' '.join(words)
         bert_words = self.tokenizer.tokenize(sent_str)
@@ -64,6 +68,20 @@ class dataprocess(Dataset):
             new_rc_labels += [e1, e2, rc_label[i + 2]]
 
         return new_rc_labels
+    
+    def truncate(self, max_seq_len, words, ner_labels, rc_labels):
+        truncated_words = words[:max_seq_len]
+        truncated_ner_labels = []
+        truncated_rc_labels = []
+        for i in range(0, len(ner_labels), 3):
+            if ner_labels[i] < max_seq_len and ner_labels[i+1] < max_seq_len:
+                truncated_ner_labels += [ner_labels[i], ner_labels[i+1], ner_labels[i+2]]
+
+        for i in range(0, len(rc_labels), 3):
+            if rc_labels[i] < max_seq_len and rc_labels[i+1] < max_seq_len:
+                truncated_rc_labels += [rc_labels[i], rc_labels[i+1], rc_labels[i+2]]
+
+        return truncated_words, truncated_ner_labels, truncated_rc_labels
 
 
 def ace_preprocess(data):
@@ -191,9 +209,9 @@ def dataloader(args, ner2idx, rel2idx):
         dev_data = nyt_and_webnlg_preprocess(dev_data)
 
 
-    train_dataset = dataprocess(train_data, args.embed_mode)
-    test_dataset = dataprocess(test_data, args.embed_mode)
-    dev_dataset = dataprocess(dev_data, args.embed_mode)
+    train_dataset = dataprocess(train_data, args.embed_mode, args.max_seq_len)
+    test_dataset = dataprocess(test_data, args.embed_mode, args.max_seq_len)
+    dev_dataset = dataprocess(dev_data, args.embed_mode, args.max_seq_len)
     collate_fn = collater(ner2idx, rel2idx)
 
 
