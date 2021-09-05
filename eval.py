@@ -47,6 +47,9 @@ if __name__ == '__main__':
 
     parser.add_argument("--dropconnect", default=0.1, type=float,
                         help="dropconnect rate for partition filter layer")
+    
+    parser.add_argument("--max_seq_len", default=128, type=int,
+                        help="maximum length of sequence")
 
 
     args = parser.parse_args()
