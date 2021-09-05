@@ -129,7 +129,8 @@ if __name__ == '__main__':
     parser.add_argument("--clip", default=0.25, type=float,
                         help="grad norm clipping to avoid gradient explosion")
 
-
+    parser.add_argument("--max_seq_len", default=128, type=int,
+                        help="maximum length of sequence")
 
 
     args = parser.parse_args()
