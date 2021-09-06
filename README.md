@@ -46,7 +46,7 @@ The training command-line is listed below:
 
 ```
 python main.py \
---data ${NYT/WEBNLG/ADE/ACE2005/SCIERC} \
+--data ${NYT/WEBNLG/ADE/ACE2005/ACE2004/SCIERC} \
 --do_train \
 --do_eval \
 --embed_mode ${bert_cased/albert/scibert} \
@@ -68,7 +68,7 @@ The evaluation command-line is listed as follows:
 
 ```
 python eval.py \
---data ${NYT/WEBNLG/ADE/ACE2005/SCIERC} \
+--data ${NYT/WEBNLG/ADE/ACE2005/ACE2004/SCIERC} \
 --eval_metric ${micro/macro} \
 --model_file ${the path of saved model you want to evaluate. e.g. save/ace_test.pt} \
 --embed_mode ${bert_cased/albert/scibert}
@@ -169,7 +169,7 @@ WEBNLG     bert-base-cased     0.9803  0.9363
 ACE2005    albert-xxlarge-v1   0.8903  0.6679
 SCIERC     scibert-uncased     0.6682  0.3842
 
-f1 results on ACE
+f1 results on ACE2004
 5-fold                  0    1    2    3    4       average
 albert-NER              89.7 89.9 89.5 89.7 87.6     89.3
 albert-RE               65.5 61.4 63.4 61.5 60.7     62.5
