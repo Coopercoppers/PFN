@@ -34,7 +34,7 @@ pip install -r requirements.txt
 ```
 
 ### Data Acquisition and Preprocessing
-We evaluate our model on five datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **SCIERC**].  
+We evaluate our model on five datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**].  
 Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
 
 
@@ -141,7 +141,7 @@ triple: Laguna Beach, PART-WHOLE, California
 
 ## Pre-trained Models and Training Logs
 
-We provide you with pre-trained models for NYT/WEBNLG/ACE2005/SCIERC, along with recorded results of each epoch,
+We provide you with pre-trained models for NYT/WEBNLG/ACE2005/ACE2004/SCIERC, along with recorded results of each epoch,
 identical with training results under the specified configurations above.  
 
 
@@ -154,6 +154,7 @@ Also, **${data}_test.txt** and **${data}_test.log** records the results of each 
 * [NYT-bert](https://drive.google.com/file/d/1hyLDruvg6qBhveGWZQEzJ9_LCDPbLpLw/view?usp=sharing)
 * [WEBNLG-bert](https://drive.google.com/file/d/1Tdw6TYgVKlKbnbKAXyOPBgWbEeXnim3Q/view?usp=sharing)
 * [ACE2005-albert](https://drive.google.com/file/d/17HcLawF23rZEhWl-6QtN9hg8HMvR4Imf/view?usp=sharing)
+* [ACE2004-albert]()
 * [SCIERC-scibert](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing)
 
 
@@ -168,6 +169,10 @@ WEBNLG     bert-base-cased     0.9803  0.9363
 ACE2005    albert-xxlarge-v1   0.8903  0.6679
 SCIERC     scibert-uncased     0.6682  0.3842
 
+f1 results on ACE
+5-fold                  0    1    2    3    4       average
+albert-NER              89.7 89.9 89.5 89.7 87.6     89.3
+albert-RE               65.5 61.4 63.4 61.5 60.7     62.5
 
 f1 results on ADE:
 
