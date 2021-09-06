@@ -34,7 +34,7 @@ pip install -r requirements.txt
 ```
 
 ### Data Acquisition and Preprocessing
-We evaluate our model on five datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**].  
+We evaluate our model on six datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**].  
 Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
 
 
@@ -154,7 +154,7 @@ Also, **${data}_test.txt** and **${data}_test.log** records the results of each 
 * [NYT-bert](https://drive.google.com/file/d/1hyLDruvg6qBhveGWZQEzJ9_LCDPbLpLw/view?usp=sharing)
 * [WEBNLG-bert](https://drive.google.com/file/d/1Tdw6TYgVKlKbnbKAXyOPBgWbEeXnim3Q/view?usp=sharing)
 * [ACE2005-albert](https://drive.google.com/file/d/17HcLawF23rZEhWl-6QtN9hg8HMvR4Imf/view?usp=sharing)
-* [ACE2004-albert]()
+* [ACE2004-albert](https://drive.google.com/file/d/1ViTsEvprcouGozdVqZahtgtg1WNzvQci/view?usp=sharing)
 * [SCIERC-scibert](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing)
 
 
@@ -206,7 +206,6 @@ Please cite our paper if it's helpful to you in your research.
       archivePrefix={arXiv},
       primaryClass={cs.CL}
 }
-
 ```
 
 
