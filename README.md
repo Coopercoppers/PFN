@@ -27,15 +27,13 @@ filter encoder** designed for multi-task learning. The encoder enforces bilatera
 ## Preparation
 
 ### Environment Setup
-The experiments were performed using one single NVIDIA-RTX3090 GPU.  
-The dependency packages can be installed with the following command:
+The experiments were performed using one single NVIDIA-RTX3090 GPU. The dependency packages can be installed with the following command:
 ```
 pip install -r requirements.txt
 ```
 
 ### Data Acquisition and Preprocessing
-We evaluate our model on six datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**].  
-Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
+We evaluate our model on six datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
 
 
 ## Quick Start
@@ -84,8 +82,7 @@ python inference.py \
 --sent ${sentence you want to evaluate, str type restricted}
 ```
    
-{model_file} must contain information about the datasets the model trained on (web/nyt/ade/ace/sci)   
-and the type of pretrained embedding the model uses (albert/bert/scibert). For example, model_file could be set as "web_bert.pt"  
+{model_file} must contain information about the datasets the model trained on (web/nyt/ade/ace/sci) and the type of pretrained embedding the model uses (albert/bert/scibert). For example, model_file could be set as "web_bert.pt"  
  
   
 #### Example
@@ -141,8 +138,7 @@ triple: Laguna Beach, PART-WHOLE, California
 
 ## Pre-trained Models and Training Logs
 
-We provide you with pre-trained models for NYT/WEBNLG/ACE2005/ACE2004/SCIERC, along with recorded results of each epoch,
-identical with training results under the specified configurations above.  
+We provide you with pre-trained models for NYT/WEBNLG/ACE2005/ACE2004/SCIERC, along with recorded results of each epoch, identical with training results under the specified configurations above.  
 
 
 ### Download Links
@@ -188,8 +184,7 @@ albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.
 ![](./fig/robustness.png)
 We use robustness test to evaluate our model under adverse circumstances. In this case, we use the domain transformation methods of NER from [Textflint](https://www.textflint.io/textflint).   
 
-Descriptions of the transformation methods, test files and baseline results can be found in their website.  
-The test files can also be found in the folder of ./robustness_data/. 
+Descriptions of the transformation methods, test files and baseline results can be found in their website. The test files can also be found in the folder of ./robustness_data/. 
 
 
 
