@@ -178,8 +178,15 @@ def dataloader(args, ner2idx, rel2idx):
         split = int(0.15 * len(train_raw_data))
         train_data = train_raw_data[split:]
         dev_data = train_raw_data[:split]
-
-
+    
+    elif args.data == "ACE2004":
+        train_raw_data = json_loads(path, "train_triples.json")
+        test_data = json_loads(path, "test_triples.json")
+        random.shuffle(train_raw_data)
+        split = int(0.15 * len(train_raw_data))
+        train_data = train_raw_data[split:]
+        dev_data = train_raw_data[:split]
+    
     elif args.data == "ACE2005":
         train_data = json_loads(path, 'train_triples.json')
         test_data = json_loads(path, 'test_triples.json')
@@ -192,7 +199,7 @@ def dataloader(args, ner2idx, rel2idx):
 
 
 
-    if args.data=="ACE2005":
+    if args.data=="ACE2005" or args.data=="ACE2004":
         train_data = ace_preprocess(train_data)
         test_data = ace_preprocess(test_data)
         dev_data = ace_preprocess(dev_data)
