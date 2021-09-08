@@ -142,17 +142,17 @@ We provide you with pre-trained models for NYT/WEBNLG/ACE2005/ACE2004/SCIERC, al
 
 
 ### Download Links
-Due to limited space in google drive, 10-fold model files for ADE are not available.  
+Due to limited space in google drive, 10-fold model files for ADE are not available to you (training record still available).  
 
 After downloading the linked files below, unzip them and put **${data}_test.pt** in the directory of ./save/ before running eval.py.
 Also, **${data}_test.txt** and **${data}_test.log** records the results of each epoch. You should check that out as well.  
 
-* [NYT-bert](https://drive.google.com/file/d/1hyLDruvg6qBhveGWZQEzJ9_LCDPbLpLw/view?usp=sharing)
-* [WEBNLG-bert](https://drive.google.com/file/d/1Tdw6TYgVKlKbnbKAXyOPBgWbEeXnim3Q/view?usp=sharing)
-* [ACE2005-albert](https://drive.google.com/file/d/17HcLawF23rZEhWl-6QtN9hg8HMvR4Imf/view?usp=sharing)
-* [ACE2004-albert](https://drive.google.com/file/d/1ViTsEvprcouGozdVqZahtgtg1WNzvQci/view?usp=sharing)
-* [SCIERC-scibert](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing)
-
+* [NYT-bert-393MB](https://drive.google.com/file/d/1hyLDruvg6qBhveGWZQEzJ9_LCDPbLpLw/view?usp=sharing)
+* [WEBNLG-bert-393MB](https://drive.google.com/file/d/1Tdw6TYgVKlKbnbKAXyOPBgWbEeXnim3Q/view?usp=sharing)
+* [ACE2005-albert-815MB](https://drive.google.com/file/d/17HcLawF23rZEhWl-6QtN9hg8HMvR4Imf/view?usp=sharing)
+* [ACE2004-albert-3.98GB](https://drive.google.com/file/d/1ViTsEvprcouGozdVqZahtgtg1WNzvQci/view?usp=sharing)
+* [SCIERC-scibert-399MB](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing)
+* [ADE-albert-and-bert-214KB](https://drive.google.com/file/d/1LexnMMNHY50nLdLku6V8_L_0BBLABVOA/view?usp=sharing)
 
 ### Result Display
 
