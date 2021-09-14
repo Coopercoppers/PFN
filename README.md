@@ -16,7 +16,7 @@ This repository contains codes of the official implementation for the paper [A P
 * [Robustness Against Input Perturbation](#Robustness-Against-Input-Perturbation)
 * [Additional Notes](#Additional-notes)
   * [Evaluation on CoNLL04](#Evaluation-on-CoNLL04)
-  * [Gradient Vanishing and Explosion](#Gradient-Vanishing-and-Explosion)
+  * [Gradient Explosion and Convergence Failure](#Gradient-Explosion-and-Convergence-Failure)
 * [Citation](#Citation)
 
 
@@ -202,8 +202,8 @@ We also run the test on the dataset CoNLL04, but we did not report the results i
 The best micro F1-scores we get for NER/RE are 89.6/75.0 (previous sota table-sequence reports 90.1/73.6)  
 Hyper-parameters for this dataset are: epoch-200, lr-0.00002, batch_size-10, clip-1.0, the dataset can be retrived from the same source as ADE and SCIERC.
 
-### Gradient Vanishing and Explosion
-Improper selection of hyper-parameters can lead to gradient vanishing and explosion in some extreme cases, If you encounter this problem, you should check on the hype-parameters especially the clip value of grad norm.
+### Gradient Explosion and Convergence Failure
+Improper selection of hyper-parameters can lead to gradient explosion and convergence failure in some extreme cases, If you encounter this problem, you should check on the hype-parameters especially the clip value of grad norm.
 
 
 
