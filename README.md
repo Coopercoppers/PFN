@@ -196,7 +196,7 @@ The test files can be found in the folder of ./robustness_data/.  Our reported r
 
 ### Evaluation on CoNLL04
 We also run the test on the dataset CoNLL04, but we did not report the results in our paper due to several reasons:  
-* We are unsure that the baseline results are fairly reported which is dicussed in detail in [Let's Stop Incorrect Comparisons in End-to-end Relation Extraction!](https://arxiv.org/pdf/2009.10684.pdf) 
+* We are unsure that the baseline results are fairly reported which is discussed in detail in [Let's Stop Incorrect Comparisons in End-to-end Relation Extraction!](https://arxiv.org/pdf/2009.10684.pdf) 
 * Hyper-parameter tuning affects the performance considerably in this dataset.
 * Page limits
 
@@ -216,23 +216,20 @@ python main.py \
 --eval_metric ${micro/macro} \
 --clip 1.0 \
 --epoch 200
-
 ```
 
 The results are:
 ```
-Model            Micro-NER    Micro-RE   Macro-NER   Macro-RE
-
-Table-sequence     90.1         73.6       86.9        75.4
-PFN                89.6         75.0       86.4        76.3
-
+Model            Micro-NER    Micro-RE
+Table-sequence   90.1         73.6       
+PFN              89.6         75.0      
 ```
 
 Pre-trained model and training log can be downloaded from [Conll04-albert-815MB](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing)
 
 
 ### Gradient Explosion and Convergence Failure
-Improper selection of hyper-parameters can lead to gradient explosion and convergence failure in some extreme cases, If you encounter this problem, you should check on the hype-parameters especially the clip value of grad norm.
+Improper selection of hyper-parameters can lead to gradient explosion and convergence failure in some extreme cases, If you encounter this problem, you should check on the hyper-parameters especially the clip value of grad norm.
 
 
 
