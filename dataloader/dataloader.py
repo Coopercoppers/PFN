@@ -205,7 +205,7 @@ def dataloader(args, ner2idx, rel2idx):
         dev_data = ace_preprocess(dev_data)
 
 
-    elif args.data=="ADE" or args.data=="SCIERC":
+    elif args.data=="ADE" or args.data=="SCIERC" or args.data=="CONLL04":
         train_data = ade_and_sci_preprocess(train_data, args.data)
         test_data = ade_and_sci_preprocess(test_data, args.data)
         dev_data = ade_and_sci_preprocess(dev_data, args.data)
