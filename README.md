@@ -16,7 +16,7 @@ This repository contains codes of the official implementation for the paper [A P
 * [Robustness Against Input Perturbation](#Robustness-Against-Input-Perturbation)
 * [Additional Notes](#Additional-notes)
   * [Evaluation on CoNLL04](#Evaluation-on-CoNLL04)
-  * [Gradient Vanishing and Explosion](Gradient-Vanishing-and-Explosion)
+  * [Gradient Vanishing and Explosion](#Gradient-Vanishing-and-Explosion)
 * [Citation](#Citation)
 
 
