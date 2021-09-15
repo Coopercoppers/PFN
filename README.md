@@ -184,8 +184,6 @@ Also, **${data}_test.txt** and **${data}_test.log** records the results of each 
 | **ADE**               |  214KB     | Bert + Albert      | [Link](https://drive.google.com/file/d/1LexnMMNHY50nLdLku6V8_L_0BBLABVOA/view?usp=sharing) |
 | **CoNll04**           |  815MB     | Albert-xxlarge-v1  | [Link](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing) |
 
-
-
 ### Result Display
 F1 results on NYT/WebNLG/ACE05/SciERC:
 | Dataset    |  Embedding          | NER       | RE        |
@@ -195,11 +193,19 @@ F1 results on NYT/WebNLG/ACE05/SciERC:
 | **ACE05**  |  Albert-xxlarge-v1  | 89.0      | 66.8      |
 | **SciERC** |  Scibert-uncased    | 66.8      | 38.4      |
 
+
+
 F1 results on ACE04:
 | 5-fold     |  0    |  1  | 2   | 3     |  4      | Average |
 | ---------- |  ---- |---- |---- |------ | ------- | ------- |
 | Albert-NER |  89.7 |89.9 |89.5 |89.7   |  87.6   | 89.3    |
 | Albert-RE  |  65.5 |61.4 |63.4 |61.5   |  60.7   | 62.5    |
+
+F1 results on CoNLL04:
+| Model         |  Embedding          | Micro-NER | Micro-RE |
+| ------------- |  ---------          | --------- | ---------|
+| Table-sequence|  Albert-xxlarge-v1  | 90.1      | 73.6     |
+| PFN           |  Albert-xxlarge-v1  | 89.6      | 75.0     |
 
 F1 results on ADE:
 | 10-fold     |  0    |  1  | 2   | 3     |  4      | 5  | 6  | 7  | 8  | 9  | Average |
@@ -208,12 +214,6 @@ F1 results on ADE:
 | Bert-RE     |  80.5 |85.8 |79.9 |79.4   |  79.3   |80.5|80.0|78.1|76.2|79.8| 80.0    |
 | Albert-NER  |  91.4 |92.9 |91.9 |91.5   |  90.7   |91.6|91.9|89.9|90.6|90.7| 91.3    |
 | Albert-RE   |  83.9 |86.8 |82.8 |83.2   |  82.2   |82.4|84.5|82.3|81.9|82.2| 83.2    |
-
-F1 results on CoNLL04:
-| Model         |  Embedding          | Micro-NER | Micro-RE  |
-| ------------- |  ---------          | --------- | --------- |
-| Table-sequence|  Albert-xxlarge-v1  | 90.1      | 73.6      |
-| PFN           |  Albert-xxlarge-v1  | 89.6      | 75.0      |
 
 
 ## Robustness Against Input Perturbation
