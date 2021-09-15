@@ -194,6 +194,7 @@ ACE2005    albert-xxlarge-v1   0.8903  0.6679
 SCIERC     scibert-uncased     0.6682  0.3842
 
 f1 results on ACE2004
+
 5-fold                  0    1    2    3    4       average
 albert-NER              89.7 89.9 89.5 89.7 87.6     89.3
 albert-RE               65.5 61.4 63.4 61.5 60.7     62.5
@@ -207,6 +208,7 @@ albert-NER              91.4 92.9 91.9 91.5 90.7 91.6 91.9 89.9 90.6 90.7    91.
 albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.2
 
 f1 results on CONLL04:
+
 Model            Micro-NER    Micro-RE
 Table-sequence   90.1         73.6       
 PFN              89.6         75.0 
