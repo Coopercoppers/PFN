@@ -140,7 +140,7 @@ triple: Laguna Beach, PART-WHOLE, California
 
 ## Pre-trained Models and Training Logs
 
-We provide you with pre-trained models for NYT/WEBNLG/ACE2005/ACE2004/SCIERC, along with recorded results of each epoch, identical with training results under the specified configurations above.  
+We provide you with pre-trained models for NYT/WEBNLG/ACE2005/ACE2004/SCIERC/CONLL04, along with recorded results of each epoch, identical with training results under the specified configurations above.  
 
 
 ### Download Links
@@ -155,6 +155,7 @@ Also, **${data}_test.txt** and **${data}_test.log** records the results of each 
 * [ACE2004-albert-3.98GB](https://drive.google.com/file/d/1ViTsEvprcouGozdVqZahtgtg1WNzvQci/view?usp=sharing)
 * [SCIERC-scibert-399MB](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing)
 * [ADE-albert-and-bert-214KB](https://drive.google.com/file/d/1LexnMMNHY50nLdLku6V8_L_0BBLABVOA/view?usp=sharing)
+* [Conll04-albert-815MB](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing)
 
 ### Result Display
 
@@ -220,10 +221,6 @@ Model            Micro-NER    Micro-RE
 Table-sequence   90.1         73.6       
 PFN              89.6         75.0      
 ```
-
-Pre-trained model and training log can be downloaded from [Conll04-albert-815MB](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing)
-
-
 
 
 ## Citation
