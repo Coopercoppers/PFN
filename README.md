@@ -155,7 +155,7 @@ Also, **${data}_test.txt** and **${data}_test.log** records the results of each 
 * [ACE2004-albert-3.98GB](https://drive.google.com/file/d/1ViTsEvprcouGozdVqZahtgtg1WNzvQci/view?usp=sharing)
 * [SCIERC-scibert-399MB](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing)
 * [ADE-albert-and-bert-214KB](https://drive.google.com/file/d/1LexnMMNHY50nLdLku6V8_L_0BBLABVOA/view?usp=sharing)
-* [Conll04-albert-815MB](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing)
+* [CONll04-albert-815MB](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing)
 
 ### Result Display
 
