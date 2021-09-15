@@ -187,36 +187,34 @@ Also, **${data}_test.txt** and **${data}_test.log** records the results of each 
 
 
 ### Result Display
+F1 results on NYT/WebNLG/ACE05/SciERC
+| Dataset    |  Embedding          | NER       | RE        |
+| ---------- |  ---------          | --------- | --------- |
+| **NYT**    |  Bert-base-cased    | 95.8      | 92.4      |
+| **WebNLG** |  Bert-base-cased    | 98.0      | 93.6      |
+| **ACE05**  |  Albert-xxlarge-v1  | 89.0      | 66.8      |
+| **SciERC** |  Scibert-uncased    | 66.8      | 38.4      |
 
-```
-f1 results on NYT/WEBNLG/ACE2005/SCIERC:
+F1 results on ACE04:
+| 5-fold     |  0    |  1  | 2   | 3     |  4      | Average |
+| ---------- |  ---- |---- |---- |------ | ------- | ------- |
+| Albert-NER |  89.7 |89.9 |89.5 |89.7   |  87.6   | 89.3    |
+| Albert-RE  |  65.5 |61.4 |63.4 |61.5   |  60.7   | 62.5    |
 
-dataset    Embedding           NER     RE
-NYT        bert-base-cased     0.9575  0.9242
-WEBNLG     bert-base-cased     0.9803  0.9363
-ACE2005    albert-xxlarge-v1   0.8903  0.6679
-SCIERC     scibert-uncased     0.6682  0.3842
-
-f1 results on ACE2004:
-
-5-fold                  0    1    2    3    4       average
-albert-NER              89.7 89.9 89.5 89.7 87.6     89.3
-albert-RE               65.5 61.4 63.4 61.5 60.7     62.5
-
-f1 results on ADE:
-
-10-fold                 0    1    2    3    4    5    6    7    8    9      average
-bert-NER                89.6 92.3 90.3 88.9 88.8 90.2 90.1 88.5 88.0 88.9    89.6
-bert-RE                 80.5 85.8 79.9 79.4 79.3 80.5 80.0 78.1 76.2 79.8    80.0
-albert-NER              91.4 92.9 91.9 91.5 90.7 91.6 91.9 89.9 90.6 90.7    91.3 
-albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.2
+F1 results on ADE
+| 10-fold     |  0    |  1  | 2   | 3     |  4      | 5  | 6  | 7  | 8  | 9  | Average |
+| -------     | ------|-----|-----|------ |---------|----|----|----|----|----| ------- |
+| Bert-NER    |  89.6 |92.3 |90.3 |88.9   |  88.8   |90.2|90.1|88.5|88.0|88.9| 89.6    |
+| Bert-RE     |  80.5 |85.8 |79.9 |79.4   |  79.3   |80.5|80.0|78.1|76.2|79.8| 80.0    |
+| Albert-NER  |  91.4 |92.9 |91.9 |91.5   |  90.7   |91.6|91.9|89.9|90.6|90.7| 91.3    |
+| Albert-RE   |  83.9 |86.8 |82.8 |83.2   |  82.2   |82.4|84.5|82.3|81.9|82.2| 83.2    |
 
 f1 results on CONLL04:
+| Model         |  Embedding          | Micro-NER | Micro-RE  |
+| ------------- |  ---------          | --------- | --------- |
+| Table-sequence|  Albert-xxlarge-v1  | 90.1      | 73.6      |
+| PFN           |  Albert-xxlarge-v1  | 89.6      | 75.0      |
 
-Model            Micro-NER    Micro-RE
-Table-sequence   90.1         73.6       
-PFN              89.6         75.0 
-```
 
 ## Robustness Against Input Perturbation
 ![](./fig/robustness.png)
