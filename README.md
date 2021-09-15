@@ -35,15 +35,14 @@ pip install -r requirements.txt
 ```
 
 ### Data Acquisition and Preprocessing
-We evaluate our model on six datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
+We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
 
 
 ## Quick Start
 
 
 ### Model Training
-The training command-line is listed below:
-
+The training command-line is listed below (command for CONLL04 is in [Evaluation on CoNLL04](#Evaluation-on-CoNLL04)):  
 ```
 python main.py \
 --data ${NYT/WEBNLG/ADE/ACE2005/ACE2004/SCIERC} \
@@ -147,7 +146,7 @@ We also run the test on the dataset CoNLL04, but we did not report the results i
 
 
 
-The command and result for running CoNLL04 are:
+The command for running CoNLL04 is listed below:
 
 ```
 python main.py \
@@ -161,10 +160,6 @@ python main.py \
 --eval_metric micro \
 --clip 1.0 \
 --epoch 200
-
-Model            Micro-NER    Micro-RE
-Table-sequence   90.1         73.6       
-PFN              89.6         75.0 
 ```
 
 
@@ -211,6 +206,10 @@ bert-RE                 80.5 85.8 79.9 79.4 79.3 80.5 80.0 78.1 76.2 79.8    80.
 albert-NER              91.4 92.9 91.9 91.5 90.7 91.6 91.9 89.9 90.6 90.7    91.3 
 albert-RE               83.9 86.8 82.8 83.2 82.2 82.4 84.5 82.3 81.9 82.2    83.2
 
+f1 results on CONLL04:
+Model            Micro-NER    Micro-RE
+Table-sequence   90.1         73.6       
+PFN              89.6         75.0 
 ```
 
 ## Robustness Against Input Perturbation
