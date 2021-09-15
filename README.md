@@ -193,7 +193,7 @@ WEBNLG     bert-base-cased     0.9803  0.9363
 ACE2005    albert-xxlarge-v1   0.8903  0.6679
 SCIERC     scibert-uncased     0.6682  0.3842
 
-f1 results on ACE2004
+f1 results on ACE2004:
 
 5-fold                  0    1    2    3    4       average
 albert-NER              89.7 89.9 89.5 89.7 87.6     89.3
