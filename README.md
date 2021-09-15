@@ -174,13 +174,17 @@ Due to limited space in google drive, 10-fold model files for ADE are not availa
 After downloading the linked files below, unzip them and put **${data}_test.pt** in the directory of ./save/ before running eval.py.
 Also, **${data}_test.txt** and **${data}_test.log** records the results of each epoch. You should check that out as well.  
 
-* [NYT-bert-393MB](https://drive.google.com/file/d/1hyLDruvg6qBhveGWZQEzJ9_LCDPbLpLw/view?usp=sharing)
-* [WEBNLG-bert-393MB](https://drive.google.com/file/d/1Tdw6TYgVKlKbnbKAXyOPBgWbEeXnim3Q/view?usp=sharing)
-* [ACE2005-albert-815MB](https://drive.google.com/file/d/17HcLawF23rZEhWl-6QtN9hg8HMvR4Imf/view?usp=sharing)
-* [ACE2004-albert-3.98GB](https://drive.google.com/file/d/1ViTsEvprcouGozdVqZahtgtg1WNzvQci/view?usp=sharing)
-* [SCIERC-scibert-399MB](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing)
-* [ADE-albert-and-bert-214KB](https://drive.google.com/file/d/1LexnMMNHY50nLdLku6V8_L_0BBLABVOA/view?usp=sharing)
-* [CONll04-albert-815MB](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing)
+| Dataset               |  File Size | Embedding          | Download                                                                                   |
+| --------------------- |  --------- | ----------------   | ------------------------------------------------------------------------------------------ |
+| **NYT**               |  393MB     | Bert-base-cased    | [Link](https://drive.google.com/file/d/1hyLDruvg6qBhveGWZQEzJ9_LCDPbLpLw/view?usp=sharing) |
+| **WebNLG**            |  393MB     | Bert-base-cased    | [Link](https://drive.google.com/file/d/1Tdw6TYgVKlKbnbKAXyOPBgWbEeXnim3Q/view?usp=sharing) |
+| **ACE05**             |  815MB     | Albert-xxlarge-v1  | [Link](https://drive.google.com/file/d/17HcLawF23rZEhWl-6QtN9hg8HMvR4Imf/view?usp=sharing) |
+| **ACE04**             |  3.98GB    | Albert-xxlarge-v1  | [Link](https://drive.google.com/file/d/1ViTsEvprcouGozdVqZahtgtg1WNzvQci/view?usp=sharing) |
+| **SciERC**            |  399MB     | Scibert-uncased    | [Link](https://drive.google.com/file/d/1KsWRstdhrX0IDpnDqFUi6NAlnlmzlekI/view?usp=sharing) |
+| **ADE**               |  214KB     | Bert + Albert      | [Link](https://drive.google.com/file/d/1LexnMMNHY50nLdLku6V8_L_0BBLABVOA/view?usp=sharing) |
+| **CoNll04**           |  815MB     | Albert-xxlarge-v1  | [Link](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing) |
+
+
 
 ### Result Display
 
