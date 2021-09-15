@@ -209,7 +209,7 @@ F1 results on ADE
 | Albert-NER  |  91.4 |92.9 |91.9 |91.5   |  90.7   |91.6|91.9|89.9|90.6|90.7| 91.3    |
 | Albert-RE   |  83.9 |86.8 |82.8 |83.2   |  82.2   |82.4|84.5|82.3|81.9|82.2| 83.2    |
 
-f1 results on CONLL04:
+F1 results on CoNLL04:
 | Model         |  Embedding          | Micro-NER | Micro-RE  |
 | ------------- |  ---------          | --------- | --------- |
 | Table-sequence|  Albert-xxlarge-v1  | 90.1      | 73.6      |
