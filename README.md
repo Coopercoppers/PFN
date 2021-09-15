@@ -187,7 +187,7 @@ Also, **${data}_test.txt** and **${data}_test.log** records the results of each 
 
 
 ### Result Display
-F1 results on NYT/WebNLG/ACE05/SciERC
+F1 results on NYT/WebNLG/ACE05/SciERC:
 | Dataset    |  Embedding          | NER       | RE        |
 | ---------- |  ---------          | --------- | --------- |
 | **NYT**    |  Bert-base-cased    | 95.8      | 92.4      |
@@ -201,7 +201,7 @@ F1 results on ACE04:
 | Albert-NER |  89.7 |89.9 |89.5 |89.7   |  87.6   | 89.3    |
 | Albert-RE  |  65.5 |61.4 |63.4 |61.5   |  60.7   | 62.5    |
 
-F1 results on ADE
+F1 results on ADE:
 | 10-fold     |  0    |  1  | 2   | 3     |  4      | 5  | 6  | 7  | 8  | 9  | Average |
 | -------     | ------|-----|-----|------ |---------|----|----|----|----|----| ------- |
 | Bert-NER    |  89.6 |92.3 |90.3 |88.9   |  88.8   |90.2|90.1|88.5|88.0|88.9| 89.6    |
