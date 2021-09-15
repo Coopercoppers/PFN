@@ -140,7 +140,7 @@ triple: Laguna Beach, PART-WHOLE, California
 
 ## Evaluation on CoNLL04
 We also run the test on the dataset CoNLL04, but we did not report the results in our paper due to several reasons:  
-* We are unsure that the baseline results are fairly reported which is discussed in detail in [Let's Stop Incorrect Comparisons in End-to-end Relation Extraction!](https://arxiv.org/pdf/2009.10684.pdf) 
+* We are unsure that the baseline results are fairly reported, the problems are discussed in detail in [Let's Stop Incorrect Comparisons in End-to-end Relation Extraction!](https://arxiv.org/pdf/2009.10684.pdf) 
 * Hyper-parameter tuning affects the performance considerably in this dataset.
 * Page limits
 
