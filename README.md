@@ -33,6 +33,7 @@ The experiments were performed using one single NVIDIA-RTX3090 GPU. The dependen
 ```
 pip install -r requirements.txt
 ```
+Also, make sure that the python version is 3.7.10
 
 ### Data Acquisition and Preprocessing
 We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
