@@ -243,7 +243,7 @@ Please cite our paper if it's helpful to you in your research.
 ```
 
 ## Questions
-The following questions are asked through my e-mail zhyan20@fudan.edu.cn and from reviewers.
+The following questions are asked through my e-mail zhyan20@fudan.edu.cn or from reviewers.
 1. Examples for the process of partition?  
    Suppose that the number of neurons are **5**, and entity gate **e** and relation gate **r** are **[0, 0, 1, 1, 1]** and **[1, 1, 1, 0, 0]** respectively.  
    By multiplying the two gates, we have **e * r = [0, 0, 1, 0, 0]**, which says that the shared information is stored in neuron number **3**.  
