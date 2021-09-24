@@ -16,6 +16,7 @@ This repository contains codes of the official implementation for the paper [A P
   * [Result Display](#Result-Display)
 * [Robustness Against Input Perturbation](#Robustness-Against-Input-Perturbation)
 * [Citation](#Citation)
+* [Q&A](#Q&A)
 
 
 ## Model Overview
@@ -241,7 +242,24 @@ Please cite our paper if it's helpful to you in your research.
 }
 ```
 
+## Q&A
+The following questions are asked through my e-mail zhyan20@fudan.edu.cn and from reviewers.
+1. Examples for the process of partition?  
+   Suppose that the number of neurons are **5**, and entity gate **e** and relation gate **r** are **[0, 0, 1, 1, 1]** and **[1, 1, 1, 0, 0]** respectively.  
+   By multiplying the two gates, we have **e * r = [0, 0, 1, 0, 0]**, which says that the shared information is stored in neuron number **3**.  
+   By subtracting the entity gate **e** from shared information, we have **[0, 0, 1, 1, 1] - [0, 0, 1, 0, 0] = [0, 0, 0, 1, 1]**, which says that the entity-specific information is stored in neuron **4** and **5**.  
+   By subtracting the relation gate **r** from shared information, likewise we have relation-specific information stored in neuron **1** and **2**. 
 
+2. Why can the entity and relation gates be seemd as approximation of [0, 0, ..., 0, 1, 1,... 1, 1]?  
+   The gates are calculated using cummax activation function. In cummax we have softmax operation, which would most likely make the value of one specific neuron particularly large. For example, in a 300-neuron set. If the softmax function points to neuron number **150** and its value is 0.6. For the first 149 neurons, their values and cumulations are small and can be seemed as nearly zero. After adding the 150 neuron to the sum, its cumulation becomes relatively large and can be seemed as nearly one, so this neuron **150** is the cut-off point between zero and one.  
+
+3. Why don't you include results of cross-sentence or relation asymmetry as used in xxx?
+   * The main results are used to demonstrate the effectiveness of model design, not using some data alteration for fancy gains which also would not be fair for other compared baselines that did not use these tricks. 
+   * Our work covers all the mainstream datasets, and the tricks are not universally appliable and are restricted to certain subset of datasets.  
+   * These tricks cannot be directly borrowed from others whose methodologies are different from us and are not the focus of our work, maybe some others can fill in the slot.  
+
+4. Isn't your model similar to parallel encoding?    
+   The model is parallel in decoding NER and RE, which do not have much task interaction as the features are already provided with enough information. The encoding is nothing like parallel encoding and is explained in detail in our paper (section 1, 2, 4). 
 
 
 
