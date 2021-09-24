@@ -255,7 +255,7 @@ The following questions are asked through my e-mail zhyan20@fudan.edu.cn or from
 
 3. Why don't you include results of cross-sentence or relation asymmetry as used in xxx?
    * The main results are used to demonstrate the effectiveness of model design, not using some data alteration for fancy gains which also would not be fair for other compared baselines that did not use these tricks. 
-   * Our work covers all the mainstream datasets, and the tricks are not universally appliable and are restricted to certain subset of datasets.  
+   * Our work covers nearly all the mainstream datasets which are diverse enough, and the tricks are not universally appliable and are restricted to certain subset of datasets.  
    * These tricks cannot be directly borrowed from others whose methodologies are different from us and are not the focus of our work, maybe some others can fill in the slot.  
 
 4. Isn't your model similar to parallel encoding?    
