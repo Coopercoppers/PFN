@@ -16,7 +16,7 @@ This repository contains codes of the official implementation for the paper [A P
   * [Result Display](#Result-Display)
 * [Robustness Against Input Perturbation](#Robustness-Against-Input-Perturbation)
 * [Citation](#Citation)
-* [Q&A](#Q&A)
+* [Questions](#Questions)
 
 
 ## Model Overview
@@ -242,7 +242,7 @@ Please cite our paper if it's helpful to you in your research.
 }
 ```
 
-## Q&A
+## Questions
 The following questions are asked through my e-mail zhyan20@fudan.edu.cn and from reviewers.
 1. Examples for the process of partition?  
    Suppose that the number of neurons are **5**, and entity gate **e** and relation gate **r** are **[0, 0, 1, 1, 1]** and **[1, 1, 1, 0, 0]** respectively.  
