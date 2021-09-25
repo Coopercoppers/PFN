@@ -247,8 +247,8 @@ The following questions are asked through my e-mail zhyan20@fudan.edu.cn or from
 1. Examples for the process of partition?  
    Suppose that the number of neurons are **5**, and entity gate **e** and relation gate **r** are **[0, 0, 1, 1, 1]** and **[1, 1, 1, 0, 0]** respectively.  
    By multiplying the two gates, we have **e * r = [0, 0, 1, 0, 0]**, which says that the shared information is stored in neuron number **3**.  
-   By subtracting the entity gate **e** from shared information, we have **[0, 0, 1, 1, 1] - [0, 0, 1, 0, 0] = [0, 0, 0, 1, 1]**, which says that the entity-specific information is stored in neuron **4** and **5**.  
-   By subtracting the relation gate **r** from shared information, likewise we have relation-specific information stored in neuron **1** and **2**. 
+   By subtracting shared information from entity gate **e**, we have **[0, 0, 1, 1, 1] - [0, 0, 1, 0, 0] = [0, 0, 0, 1, 1]**, which says that the entity-specific information is stored in neuron **4** and **5**.  
+   By subtracting shared information from relation gate **r**, likewise we have relation-specific information stored in neuron **1** and **2**. 
 
 2. Why can the entity and relation gates be seemd as approximation of [0, 0, ..., 0, 1, 1,... 1, 1]?  
    The gates are calculated using cummax activation function. In cummax we have softmax operation, which would most likely make the value of one specific neuron particularly large. For example, in a 300-neuron set. If the softmax function points to neuron number **150** and its value is 0.6. For the first 149 neurons, their values and cumulations are small and can be seemed as nearly zero. After adding the 150 neuron to the sum, its cumulation becomes relatively large and can be seemed as nearly one, so this neuron **150** is the cut-off point between zero and one.  
