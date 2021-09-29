@@ -16,7 +16,7 @@ This repository contains codes of the official implementation for the paper [A P
   * [Result Display](#Result-Display)
 * [Robustness Against Input Perturbation](#Robustness-Against-Input-Perturbation)
 * [Citation](#Citation)
-* [Questions](#Questions)
+* [Questions and Notes](#Questions-and-Notes)
 
 
 ## Model Overview
@@ -37,7 +37,8 @@ pip install -r requirements.txt
 Also, make sure that the python version is 3.7.10
 
 ### Data Acquisition and Preprocessing
-We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.
+We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
+
 
 
 ## Quick Start
@@ -242,8 +243,8 @@ Please cite our paper if it's helpful to you in your research.
 }
 ```
 
-## Questions
-The following questions are asked through my e-mail zhyan20@fudan.edu.cn or from reviewers.
+## Questions and Notes
+The following questions are asked through my e-mail zhyan20@fudan.edu.cn.
 1. Examples for the process of partition?  
    Suppose that the number of neurons are **5**, and entity gate **e** and relation gate **r** are **[0, 0, 1, 1, 1]** and **[1, 1, 1, 0, 0]** respectively.  
    By multiplying the two gates, we have **e * r = [0, 0, 1, 0, 0]**, which says that the shared information is stored in neuron number **3**.  
@@ -258,9 +259,10 @@ The following questions are asked through my e-mail zhyan20@fudan.edu.cn or from
    * Our work covers nearly all the mainstream datasets which are diverse enough, and the tricks are not universally appliable and are restricted to certain subset of datasets.  
    * These tricks cannot be directly borrowed from others whose methodologies are different from us and are not the focus of our work, maybe some others can fill in the slot.  
 
-4. Isn't your model similar to parallel encoding?    
-   The model is parallel in decoding NER and RE, which do not have much task interaction as the features are already provided with enough information. The encoding is nothing like parallel encoding and is explained in detail in our paper (section 1, 2, 4). 
 
+4. Additional Notes on Datasets. 
+   * Following previous work, we truncate the input sentence if it exceeds 128 words. This operation will only affect one sentence in ACE04. All other datasets will remain intact.  
+   * The model will not be able to distinguish entities that overlaps in head tokens in relation extraction. For example, (New York, Cityof, USA) and (New York City, Cityof, USA) are both considered correct. Luckily, such instance is either filtered out (for ADE) or rare (one triple in test set of SciERC, one in ACE04, zero in other datasets), so the impact on model evaluation is limited.   
 
 
 
