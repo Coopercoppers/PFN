@@ -1,5 +1,5 @@
 # PFN (Partition Filter Network)
-This repository contains codes of the official implementation for the paper [A Partition Filter Network for Joint Entity and Relation Extraction](https://arxiv.org/pdf/2108.12202.pdf) EMNLP 2021. 
+This repository contains codes of the official implementation for the paper **A Partition Filter Network for Joint Entity and Relation Extraction** EMNLP 2021 [[PDF]](https://arxiv.org/pdf/2108.12202.pdf) [[PPT]](https://docs.google.com/presentation/d/1CiHWBdwoQexY0JgSP_JxC-QFciZBmTGo/edit?usp=sharing&ouid=107947850659680847257&rtpof=true&sd=true)
 
 ## Quick links
 * [Model Overview](#Model-Overview)
