@@ -41,9 +41,9 @@ Also, make sure that the python version is 3.7.10
 We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
 
 ### Custom Dataset 
-If your custom dataset has a large number of triples that contain head-overlap entities (common in **Chinese** dataset),  the model accuracy will not be good.  
+If your custom dataset has a large number of **triples that contain head-overlap entities** (common in **Chinese** dataset),  the model accuracy will not be good.  
 
-The model will not be able to distinguish entities that overlaps in head tokens in relation extraction. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (new, cityof, USA), we cannot know what **New** corresponds to.  
+The model will not be able to decode **triples with head-overlap entities**. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (new, cityof, USA), we cannot know what **New** corresponds to.  
 
 Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
 
