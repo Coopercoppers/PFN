@@ -41,11 +41,11 @@ Also, make sure that the python version is 3.7.10
 We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
 
 ### Custom Dataset 
+If your custom dataset has a large number of triples that contain head-overlap entities, the model accuracy will not be good.  
+
 The model will not be able to distinguish entities that overlaps in head tokens in relation extraction. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (new, cityof, USA), we cannot know what **New** corresponds to.  
 
 Luckily, the impact on model evaluation is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
-
-If your custom dataset has a large number of triples that contain head-overlap entities, the model accuracy will not be good.  
 
 Currently you can add a new tail-to-tail prediction in the RE unit to cover this case, but metric evaluation, data processing and such require modification as well. We will update a new version of PFN to handle the issue in the near future.
 
