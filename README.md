@@ -49,7 +49,7 @@ Luckily, the impact on evaluation of English dataset is limited, since such trip
 
 Currently you can:  
 * add a new tail-to-tail table prediction in the RE unit to cover this case, but metric evaluation, data processing and such require modifications as well.  
-* switch head-to-head prediction in RE table to Tail-to-Tail if your dataset has much less triples that contain tail-overlap triples. This will only incur minor changes in data processing.
+* switch head-to-head prediction in RE table to Tail-to-Tail if your dataset has much less triples that contain tail-overlap triples. This will only incur minor changes in the code.
 
 We will update a new version of PFN to handle the issue in the near future.
 
