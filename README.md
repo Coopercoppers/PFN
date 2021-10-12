@@ -47,7 +47,9 @@ The model will not be able to distinguish entities that overlaps in head tokens 
 
 Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
 
-Currently you can add a new tail-to-tail table prediction in the RE unit to cover this case, but metric evaluation, data processing and such require modifications as well. Or you can switch head-to-head prediction in RE table to Tail-to-Tail if your dataset has much less triples that contain tail-overlap triples. This will only incur minor changes in data processing.
+Currently you can:  
+* add a new tail-to-tail table prediction in the RE unit to cover this case, but metric evaluation, data processing and such require modifications as well.  
+* switch head-to-head prediction in RE table to Tail-to-Tail if your dataset has much less triples that contain tail-overlap triples. This will only incur minor changes in data processing.
 
 We will update a new version of PFN to handle the issue in the near future.
 
