@@ -182,13 +182,6 @@ if __name__ == '__main__':
         for epoch in range(args.epoch):
             steps, train_loss = 0, 0
 
-            total_triple_num = [0, 0, 0]
-            total_entity_num = [0, 0, 0]
-
-            if args.eval_metric == "macro":
-                total_triple_num = total_triple_num * len(rel2idx)
-                total_entity_num = total_entity_num * len(ner2idx)
-
             model.train()
             for data in tqdm(train_batch):
 
@@ -209,27 +202,12 @@ if __name__ == '__main__':
                 torch.nn.utils.clip_grad_norm_(parameters=model.parameters(), max_norm=args.clip)
                 optimizer.step()
 
-                entity_num = metric.count_ner_num(ner_pred, ner_label)
-                triple_num = metric.count_num(ner_pred, ner_label, re_pred, re_label)
-
-                for i in range(len(entity_num)):
-                    total_entity_num[i] += entity_num[i]
-                for i in range(len(triple_num)):
-                    total_triple_num[i] += triple_num[i]
-
-
                 if steps % args.steps == 0:
                     logger.info("Epoch: {}, step: {} / {}, loss = {:.4f}".format
                                 (epoch, steps, len(train_batch), train_loss / steps))
 
-
-            triple_result = f1(total_triple_num)
-            entity_result = f1(total_entity_num)
-
             logger.info("------ Training Set Results ------")
             logger.info("loss : {:.4f}".format(train_loss / steps))
-            logger.info("entity: p={:.4f}, r={:.4f}, f={:.4f}".format(entity_result["p"], entity_result["r"], entity_result["f"]))
-            logger.info("triple: p={:.4f}, r={:.4f}, f={:.4f}".format(triple_result["p"], triple_result["r"], triple_result["f"]))
 
             if args.do_eval:
                 model.eval()
