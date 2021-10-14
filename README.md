@@ -11,7 +11,6 @@ This repository contains codes of the official implementation for the paper **A 
   * [Model Training](#Model-Training)
   * [Evaluation on Pre-trained Model](#Evaluation-on-Pre-trained-Model)
   * [Inference on Customized Input](#Inference-on-Customized-Input)
-* [PFN Nested](#PFN-Nested)
 * [Evaluation on CoNLL04](#Evaluation-on-CoNLL04)
 * [Pre-trained Models and Training Logs](#Pre-trained-Models-and-Training-Logs)
   * [Download Links](#Download-Links)
@@ -47,7 +46,7 @@ The orignal one will not be able to decode **triples with head-overlap entities*
 
 Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
 
-You can use our updated PFN-nested to handle the issue.
+You can use our updated PFN-nested to handle the issue. PFN-nested is an enhanced version of PFN. This model is better in leveraging entity tail information and capable of handling nested triple prediction. For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start.
 
 
 
@@ -152,11 +151,6 @@ triple: caretaker, PHYS, ranch
 triple: ranch, PART-WHOLE, Laguna Beach
 triple: Laguna Beach, PART-WHOLE, California
 ```
-
-## PFN Nested
-An enhanced version of PFN. This model is better in leveraging entity tail information and capable of handling nested triple prediction. For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start.
-
-
 
 
 ## Evaluation on CoNLL04
