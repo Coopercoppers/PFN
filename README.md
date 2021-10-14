@@ -155,7 +155,8 @@ triple: Laguna Beach, PART-WHOLE, California
 ```
 
 ## PFN Nested
-Under construction
+An enhanced version of PFN with better performance, this model is better in leveraging entity tail information and capable of handling nested triple prediction.   
+The remaining part is still under construction
 
 
 
