@@ -48,7 +48,7 @@ The orignal one will not be able to decode **triples with head-overlap entities*
 
 Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
 
-You can use our updated PFN-nested to handle the issue. However that part is still under construction. 
+You can use our updated PFN-nested to handle the issue.
 
 
 
