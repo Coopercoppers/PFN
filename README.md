@@ -155,7 +155,7 @@ triple: Laguna Beach, PART-WHOLE, California
 ```
 
 ## PFN Nested
-An enhanced version of PFN with better performance. This model is better in leveraging entity tail information and capable of handling nested triple prediction. For usage, replace the files in the root directory with the files in the PFN-nested folder.
+An enhanced version of PFN. This model is better in leveraging entity tail information and capable of handling nested triple prediction. For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start.
 
 
 
