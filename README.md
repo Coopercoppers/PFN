@@ -11,6 +11,7 @@ This repository contains codes of the official implementation for the paper **A 
   * [Model Training](#Model-Training)
   * [Evaluation on Pre-trained Model](#Evaluation-on-Pre-trained-Model)
   * [Inference on Customized Input](#Inference-on-Customized-Input)
+* [PFN Nested](#PFN-Nested)
 * [Evaluation on CoNLL04](#Evaluation-on-CoNLL04)
 * [Pre-trained Models and Training Logs](#Pre-trained-Models-and-Training-Logs)
   * [Download Links](#Download-Links)
@@ -41,17 +42,15 @@ Also, make sure that the python version is 3.7.10
 We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
 
 ### Custom Dataset 
-If your custom dataset has a large number of **triples that contain head-overlap entities** (common in **Chinese** dataset),  the model accuracy will not be good.  
+If your custom dataset has a large number of **triples that contain head-overlap entities** (common in **Chinese** dataset),  the orignal PFN model accuracy will not be good.  
 
-The model will not be able to decode **triples with head-overlap entities**. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (new, cityof, USA), we cannot know what **New** corresponds to.  
+The orignal one will not be able to decode **triples with head-overlap entities**. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (new, cityof, USA), we cannot know what **New** corresponds to.  
 
 Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
 
-Currently you can:  
-* add a new tail-to-tail table prediction in the RE unit to cover this case, but metric evaluation, data processing and such require modifications as well.  
-* switch head-to-head prediction in RE table to Tail-to-Tail if your dataset has much less triples that contain tail-overlap triples. This will only incur minor changes in the code.
+You can use our updated PFN-nested to handle the issue. However that part is still under construction. 
 
-We will update a new version of PFN to handle the issue in the near future.
+
 
 
 
@@ -103,7 +102,8 @@ python inference.py \
 {model_file} must contain information about the datasets the model trained on (web/nyt/ade/ace/sci) and the type of pretrained embedding the model uses (albert/bert/scibert). For example, model_file could be set as "web_bert.pt"  
  
   
-#### Example
+**Example**
+
 ```
 input:
 python inference.py \
@@ -153,6 +153,11 @@ triple: caretaker, PHYS, ranch
 triple: ranch, PART-WHOLE, Laguna Beach
 triple: Laguna Beach, PART-WHOLE, California
 ```
+
+## PFN Nested
+Under construction
+
+
 
 
 ## Evaluation on CoNLL04
