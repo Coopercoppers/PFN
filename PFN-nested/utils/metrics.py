@@ -7,20 +7,6 @@ class micro():
         self.ner2idx = ner2idx
 
 
-    def get_right_entity_pair(self, ner_pred, ner_label):
-        # ner_label : seq_len * seq_len * batch_size * entity_type
-
-        ret = ner_label * ner_pred
-        ret = torch.sum(ret, dim=1)
-        ret = torch.sum(ret, dim=-1)
-        ret = torch.where(ret > 0, torch.ones_like(ret), torch.zeros_like(ret))
-
-        seq_len = ner_label.size(0)
-        e1 = ret.unsqueeze(0).repeat(seq_len, 1, 1)
-        e2 = ret.unsqueeze(1).repeat(1, seq_len, 1)
-        ret = e1 * e2
-        return ret
-
     def get_ner_index(self, tensor):
         index = (tensor == 1).nonzero(as_tuple=False)
         index_scalar = []
@@ -95,9 +81,7 @@ class micro():
 
 
         batch = ner_pred.size(2)
-        pred_num = 0
-        right_num = 0
-        gold_num = 0
+        pred_num, gold_num, right_num = 0, 0, 0
         for i in range(batch):
             ner_pred_batch = ner_pred[:, :, i, :]
             ner_label_batch = ner_label[:, :, i, :]
@@ -143,40 +127,36 @@ class macro():
         self.rel2idx = rel2idx
         self.ner2idx = ner2idx
 
-    def get_right_entity_pair(self, ner_pred, ner_label):
-        # ner_label : seq_len * seq_len * batch_size * entity_type
 
-        ret = ner_label * ner_pred
-        ret = torch.sum(ret, dim=1)
-        ret = torch.sum(ret, dim=-1)
-        ret = torch.where(ret > 0, torch.ones_like(ret), torch.zeros_like(ret))
-
-        seq_len = ner_label.size(0)
-        e1 = ret.unsqueeze(0).repeat(seq_len, 1, 1)
-        e2 = ret.unsqueeze(1).repeat(1, seq_len, 1)
-        ret = e1 * e2
-        return ret
-
-    def get_index(self, tensor):
+    def get_ner_index(self, tensor):
         index = (tensor == 1).nonzero(as_tuple=False)
         index_scalar = []
         for index_tup in index:
             scalar = []
             for i in index_tup:
                 scalar.append(i.item())
-            index_scalar.append(scalar)
+            index_scalar.append(tuple(scalar))
         return index_scalar
 
-    def get_trip(self, ner_pred, re_head_pred, re_tail_pred):
-        seq_len = ner_pred.size(0)
-        relation = len(self.rel2idx)
+    def get_re_index(self, tensor):
+        index = (tensor == 1).nonzero(as_tuple=False)
+        index_list = []
+        for index_tup in index:
+            for i in index_tup:
+                index_list.append(i.item())
+        return index_list
 
-        re_head_pred = re_head_pred.view(seq_len * seq_len, -1)
-        re_tail_pred = re_tail_pred.view(seq_len * seq_len, -1)
+    def get_trip(self, ner_pred, re_head_pred, re_tail_pred, relation):
+        seq_len = ner_pred.size(0)
+
+
+        re_head_pred = re_head_pred.view(seq_len * seq_len)
+        re_tail_pred = re_tail_pred.view(seq_len * seq_len)
+
         ner_pred = torch.sum(ner_pred, dim=-1)
         ner_pred = torch.where(ner_pred > 0, torch.ones_like(ner_pred), torch.zeros_like(ner_pred))
 
-        ner_pred_index = self.get_index(ner_pred)
+        ner_pred_index = self.get_ner_index(ner_pred)
         ner_map = {}  # head to [(head,tail1),(head,tail2)]
         for tup in ner_pred_index:
             if tup[0] not in ner_map:
@@ -184,27 +164,31 @@ class macro():
             else:
                 ner_map[tup[0]].append(tup)
 
-        subjects = set()
-        objects = set()
+
         full_trip = []
 
-        for r in range(relation):
-            re_head_pred_index = self.get_index(re_head_pred[:, r])
-            re_tail_pred_index = self.get_index(re_tail_pred[:, r])
-            for i in range(seq_len * seq_len):
-                if i in re_head_pred_index:
-                    subj_index = i / seq_len
-                    obj_index = i % seq_len
 
-                    subjects += ner_map[subj_index]
-                    objects += ner_map[obj_index]
+        re_head_pred_index = self.get_re_index(re_head_pred)
+        re_tail_pred_index = self.get_re_index(re_tail_pred)
 
-            for s in subjects:
-                for o in objects:
-                    if s[1] * o[1] in re_tail_pred_index:
-                        full_trip.append([s, r, o])
+        for i in range(seq_len*seq_len):
+            if i in re_head_pred_index:
+                subj_head = int(i // seq_len)
+                obj_head = int(i % seq_len)
+                if subj_head not in ner_map.keys() or obj_head not in ner_map.keys():
+                    continue
+
+                subjects = ner_map[subj_head]
+                objects = ner_map[obj_head]
+
+                for s in subjects:
+                    for o in objects:
+                        posit = s[1] * seq_len + o[1]
+                        if posit in re_tail_pred_index:
+                            full_trip.append([s, relation, o])
 
         return full_trip
+
 
     def count_num(self, ner_pred, ner_label, re_pred_head, re_pred_tail, re_label_head, re_label_tail):
         ner_pred = torch.where(ner_pred>=0.5, torch.ones_like(ner_pred),
@@ -215,24 +199,36 @@ class macro():
                                     torch.zeros_like(re_pred_tail))
         triple_num_list = []
 
+        batch = ner_pred.size(2)
+        for r in range(len(self.rel2idx)):
+            pred_num, gold_num, right_num = 0, 0, 0
+            for i in range(batch):
+                ner_pred_batch = ner_pred[:, :, i, :]
+                ner_label_batch = ner_label[:, :, i, :]
 
-        for i in range(len(self.rel2idx)):
-            re_label_head_single = re_label_head[:, :, :, i]
-            re_label_tail_single = re_label_tail[:, :, :, i]
+                re_label_head_batch = re_label_head[:,:,i,r]
+                re_label_tail_batch = re_label_tail[:,:,i,r]
+                re_label_set = self.get_trip(ner_label_batch, re_label_head_batch, re_label_tail_batch, r)
 
-            gold_num = re_label_head_single.sum().item()
+                re_pred_head_batch = re_pred_head[:,:,i,r]
+                re_pred_tail_batch = re_pred_tail[:,:,i,r]
+                re_pred_set = self.get_trip(ner_pred_batch, re_pred_head_batch, re_pred_tail_batch, r)
 
-            re_pred_single = self.get_trip(ner_pred, re_pred_head[:, :, :, i], re_pred_tail[:, :, :, i])
-            pred_num = re_pred_single.sum().item()
 
-            re_label_single = self.get_trip(ner_label, re_label_head_single, re_label_tail_single)
+                pred_num += len(re_pred_set)
+                gold_num += len(re_label_set)
 
-            re_right = re_pred_single + re_label_single
-            re_right = torch.where(re_right == 2, torch.ones_like(re_right), torch.zeros_like(re_right))
+                re_right = [trip for trip in re_pred_set if trip in re_label_set]
 
-            ner_right_mask = self.get_right_entity_pair(ner_pred, ner_label)
-            re_right = re_right * ner_right_mask
-            right_num = re_right.sum().item()
+                ner_right_batch = ner_pred_batch * ner_label_batch
+                ner_right_batch = torch.sum(ner_right_batch, dim=-1)
+
+                for trip in re_right:
+                    subject = trip[0]
+                    object = trip[2]
+                    if ner_right_batch[subject[0], subject[1]] > 0 and ner_right_batch[object[0], object[1]] > 0:
+                        right_num += 1
+
             triple_num_list += [pred_num, gold_num, right_num]
 
         return triple_num_list
