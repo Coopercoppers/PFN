@@ -122,14 +122,15 @@ def ace_preprocess(data):
             cur_len += len(text)
     return processed
 
-## No need adding tail-to-tail in partial match
+## No need using PFN-nested in partial match
 def nyt_and_webnlg_preprocess(data):
     processed = []
     for dic in data:
         text = dic['text']
         text = text.split(" ")
         ner_labels = []
-        rc_labels = []
+        rc_head_labels = []
+        rc_tail_labels = []
         trips = dic['triple_list']
         for trip in trips:
             subj = text.index(trip[0])
@@ -140,9 +141,10 @@ def nyt_and_webnlg_preprocess(data):
             if obj not in ner_labels:
                 ner_labels +=[obj,obj,"None"]
 
-            rc_labels+=[subj,obj,rel]
+            rc_head_labels+=[subj,obj,rel]
+            rc_tail_labels+=[subj,obj,rel]
 
-        processed += [(text,ner_labels,rc_labels)]
+        processed += [(text,ner_labels,rc_head_labels,rc_tail_labels))]
     return processed
 
 
