@@ -37,16 +37,16 @@ pip install -r requirements.txt
 Also, make sure that the python version is 3.7.10
 
 ### Data Acquisition and Preprocessing
-We evaluate our model on seven datasets: [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
+**This is the first work that covers all the mainstream English datasets for evaluation**, including [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
 
 ### Custom Dataset 
-If your custom dataset has a large number of **triples that contain head-overlap entities** (common in **Chinese** dataset),  the orignal PFN model accuracy will not be good.  
+If your custom dataset has a large number of **triples that contain head-overlap entities** (common in **Chinese** dataset),  accuracy of the orignal PFN will not be good.  
 
 The orignal one will not be able to decode **triples with head-overlap entities**. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (new, cityof, USA), we cannot know what **New** corresponds to.  
 
 Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
 
-You can use our updated PFN-nested to handle the issue. PFN-nested is an enhanced version of PFN. This model is better in leveraging entity tail information and capable of handling nested triple prediction. For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start.
+You can use our updated PFN-nested to handle the issue. **PFN-nested** is an enhanced version of PFN. This model is better in leveraging entity tail information and capable of handling nested triple prediction. For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start.
 
 
 
