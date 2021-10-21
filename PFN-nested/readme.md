@@ -9,6 +9,6 @@ The tail-to-tail RE unit takes shared feature as the main feature, relation feat
 ## Justification
 Shared feature act as a mutual section for NER and RE. 
 
-By **sharing** NER results (head-to-tail) and head-to-head RE results, we should be able to get the tail-to-tail result.
+By **sharing** NER information (head-to-tail) and head-to-head RE information, we should be able to get the tail-to-tail information.
 
 This sharing mechanism is achieved by using shared feature as the main feature in the tail-to-tail RE unit.
