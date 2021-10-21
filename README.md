@@ -22,10 +22,7 @@ This repository contains codes of the official implementation for the paper **A 
 ## Model Overview
 ![](./fig/model.png)
 In this work, we present a new framework equipped with a novel recurrent encoder named **partition
-filter encoder** designed for multi-task learning. The encoder enforces bilateral interaction between NER and RE in two ways:
-1. The shared partition represents inter-task information and is equally accessible to both tasks, allowing for balanced interaction between NER and RE.  
-2. The task partitions represent intra-task information and are formed through concerted efforts of entity and relation gates, making sure that encoding process of entity and relation features are dependent upon each other.
-
+filter encoder** designed for multi-task learning.
 
 ## Preparation
 
@@ -104,8 +101,12 @@ python inference.py \
 --model_file ${the path of your saved model} \
 --sent ${sentence you want to evaluate, str type restricted}
 ```
-   
-{model_file} must contain information about the datasets the model trained on (web/nyt/ade/ace/sci) and the type of pretrained embedding the model uses (albert/bert/scibert). For example, model_file could be set as "web_bert.pt"  
+
+**model_file** must contain two kinds of keywords:
+* The dataset the model trained on - (web, nyt, ade, ace, sci)
+* Pretrained embedding the model uses - (albert, bert, scibert)
+
+For example, model_file could be set as "web_bert.pt"  
  
   
 **Example**
@@ -187,15 +188,17 @@ python main.py \
 
 
 ## Pre-trained Models and Training Logs
+For each dataset, we provide:
+* Model checkpoint with best results on the dev set
+* Training log
+* Result file with loss, NER and RE results of every epoch
 
-We provide you with pre-trained models for NYT/WEBNLG/ACE2005/ACE2004/SCIERC/CONLL04, along with recorded results of each epoch, identical with training results under the specified configurations above.  
+With the right GPU device and configurations, your training results should be identical with figures in the result files.
 
 
 ### Download Links
-Due to limited space in google drive, 10-fold model files for ADE are not available to you (training record still available).  
+Due to limited space in google drive, 10-fold model checkpoints of ADE are not available to you.  
 
-After downloading the linked files below, unzip them and put **${data}_test.pt** in the directory of ./save/ before running eval.py.
-Also, **${data}_test.txt** and **${data}_test.log** records the results of each epoch. You should check that out as well.  
 
 | Dataset               |  File Size | Embedding          | Download                                                                                   |
 | --------------------- |  --------- | ----------------   | ------------------------------------------------------------------------------------------ |
