@@ -40,7 +40,9 @@ Also, the python version we use is 3.7.10.
 Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
 
 ### Custom Dataset
-We suggest that you use **PFN-nested** for other datasets, especially Chinese datasets.  **PFN-nested** is an enhanced version of PFN. It is better in leveraging entity tail information and capable of handling nested triple prediction.
+We suggest that you use **PFN-nested** for other datasets, especially Chinese datasets.  
+
+**PFN-nested** is an enhanced version of PFN. It is better in leveraging entity tail information and capable of handling nested triple prediction.
 
 **---Usage**
 
