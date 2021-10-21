@@ -31,22 +31,29 @@ The experiments were performed using one single NVIDIA-RTX3090 GPU. The dependen
 ```
 pip install -r requirements.txt
 ```
-Also, make sure that the python version is 3.7.10
+Also, the python version we use is 3.7.10.
+
 
 ### Data Acquisition and Preprocessing
-**This is the first work that covers all the mainstream English datasets for evaluation**, including [**NYT**, **WEBNLG**, **ADE**, **ACE2005**, **ACE2004**, **SCIERC**, **CONLL04**]. Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
+**This is the first work that covers all the mainstream English datasets for evaluation**, including **NYT**, **WebNLG**, **ADE**, **ACE05**, **ACE04**, **SCIERC**, **CoNLL04**. 
+
+Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
 
 ### Custom Dataset
-If your custom dataset has a large number of **triples that contain head-overlap entities** (common in **Chinese** dataset),  accuracy of the orignal PFN will not be good.  
+We suggest that you use **PFN-nested** for other datasets, especially Chinese datasets.  **PFN-nested** is an enhanced version of PFN. It is better in leveraging entity tail information and capable of handling nested triple prediction.
 
-The orignal one will not be able to decode **triples with head-overlap entities**. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (new, cityof, USA), we cannot know what **New** corresponds to.  
-
-Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).    
-
-You can use our updated PFN-nested to handle the issue. **PFN-nested** is an enhanced version of PFN. This model is better in leveraging entity tail information and capable of handling nested triple prediction. For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start. 
+For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start. 
 
 
-Performance comparison in SciERC
+**---Reasons for Not Using the Original Model**
+
+The orignal one will not be able to decode **triples with head-overlap entities**. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (New, cityof, USA), we cannot know what **New** corresponds to.  
+
+Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).  
+
+
+**---Performance comparison in SciERC**
+
 
 | Model          |   NER       | RE        |
 | ----------     |   --------- | --------- |
@@ -109,7 +116,7 @@ python inference.py \
 For example, model_file could be set as "web_bert.pt"  
  
   
-**Example**
+**---Example**
 
 ```
 input:
@@ -163,8 +170,10 @@ triple: Laguna Beach, PART-WHOLE, California
 
 
 ## Evaluation on CoNLL04
-We also run the test on the dataset CoNLL04, but we did not report the results in our paper due to several reasons:  
-* We are unsure that the baseline results are fairly reported, the problems are discussed in detail in [Let's Stop Incorrect Comparisons in End-to-end Relation Extraction!](https://arxiv.org/pdf/2009.10684.pdf) 
+We also run the test on the dataset CoNLL04, and our model surpasses previous SoTA table-sequence in micro/macro RE by 1.4%/0.9%.  
+
+but we did not report the results in our paper due to several reasons:  
+* We are unsure that the baseline results are fairly reported, the problems are discussed in detail in [Let's Stop Incorrect Comparisons in End-to-end Relation Extraction!](https://arxiv.org/pdf/2009.10684.pdf).
 * Hyper-parameter tuning affects the performance considerably in this dataset.
 * Page limits
 
@@ -211,13 +220,15 @@ Due to limited space in google drive, 10-fold model checkpoints of ADE are not a
 | **CoNLL04**           |  815MB     | Albert-xxlarge-v1  | [Link](https://drive.google.com/file/d/1vUqNxck8zYqD63tzcH8-d54iHnB0ZO8-/view?usp=sharing) |
 
 ### Result Display
-F1 results on NYT/WebNLG/ACE05/SciERC:
-| Dataset    |  Embedding          | NER       | RE        |
-| ---------- |  ---------          | --------- | --------- |
-| **NYT**    |  Bert-base-cased    | 95.8      | 92.4      |
-| **WebNLG** |  Bert-base-cased    | 98.0      | 93.6      |
-| **ACE05**  |  Albert-xxlarge-v1  | 89.0      | 66.8      |
-| **SciERC** |  Scibert-uncased    | 66.8      | 38.4      |
+| Dataset    |  Embedding         | Evaluation Metric | NER       | RE        | 
+| ---------- |  ---------         | ----------------- | --------- | --------- |
+| **NYT**    |  Bert-base-cased   |Micro              | 95.8      | 92.4      |
+| **WebNLG** |  Bert-base-cased   |Micro              | 98.0      | 93.6      |
+| **ACE05**  |  Albert-xxlarge-v1 |Micro              | 89.0      | 66.8      |
+| **ACE04**  |  Albert-xxlarge-v1 |Micro              | 89.3      | 62.5      |
+| **SciERC** |  Scibert-uncased   |Micro              | 66.8      | 38.4      |
+| **CoNLL04**|  Albert-xxlarge-v1 |Micro/Macro        | 89.6/86.4 | 75.0/76.3 |
+| **ADE**    |  Bert/Albert       |Macro              | 89.6/91.3 | 80.0/83.2 |
 
 
 
@@ -227,11 +238,7 @@ F1 results on ACE04:
 | Albert-NER |  89.7 |89.9 |89.5 |89.7   |  87.6   | 89.3    |
 | Albert-RE  |  65.5 |61.4 |63.4 |61.5   |  60.7   | 62.5    |
 
-F1 results on CoNLL04:
-| Model         |  Embedding          | Micro-NER | Micro-RE |
-| ------------- |  ---------          | --------- | ---------|
-| Table-sequence|  Albert-xxlarge-v1  | 90.1      | 73.6     |
-| PFN           |  Albert-xxlarge-v1  | 89.6      | 75.0     |
+
 
 F1 results on ADE:
 | 10-fold     |  0    |  1  | 2   | 3     |  4      | 5  | 6  | 7  | 8  | 9  | Average |
