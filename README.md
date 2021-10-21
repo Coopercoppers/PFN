@@ -254,7 +254,9 @@ F1 results on ADE:
 
 We use robustness test to evaluate our model under adverse circumstances. In this case, we use the domain transformation methods of NER from [Textflint](https://www.textflint.io/textflint).   
 
-The test files can be found in the folder of ./robustness_data/.  Our reported results are evaluated with the linked **ACE2005-albert** model above. For each test file, move it to ./data/ACE2005/ and rename it as **test_triples.json**, then run eval.py with the instructions above. 
+The test files can be found in the folder of ./robustness_data/.  Our reported results are evaluated with the linked **ACE2005-albert** model above. 
+
+For each test file, move it to ./data/ACE2005/ and rename it as **test_triples.json**, then run eval.py with the instructions above. 
 
 
 
