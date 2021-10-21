@@ -42,8 +42,9 @@ Please follow the instructions of reademe.md in each dataset folder in ./data/ f
 ### Custom Dataset
 We suggest that you use **PFN-nested** for other datasets, especially Chinese datasets.  **PFN-nested** is an enhanced version of PFN. It is better in leveraging entity tail information and capable of handling nested triple prediction.
 
-For usage, replace the files in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start. 
+**---Usage**
 
+Replace the files (except for readme.md) in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start. 
 
 **---Reasons for Not Using the Original Model**
 
