@@ -31,7 +31,10 @@ The experiments were performed using one single NVIDIA-RTX3090 GPU. The dependen
 ```
 pip install -r requirements.txt
 ```
-Also, the python version we use is 3.7.10.
+Other configurations are:  
+* python == 3.7.10
+* cuda == 11.1
+* cudnn == 8
 
 
 ### Data Acquisition and Preprocessing
