@@ -15,6 +15,7 @@ This repository contains codes of the official implementation for the paper **A 
 * [Pre-trained Models and Training Logs](#Pre-trained-Models-and-Training-Logs)
   * [Download Links](#Download-Links)
   * [Result Display](#Result-Display)
+* [Extension on Ablation Study](#Extension-on-Ablation-Study)
 * [Robustness Against Input Perturbation](#Robustness-Against-Input-Perturbation)
 * [Citation](#Citation)
 
@@ -253,6 +254,16 @@ F1 results on ADE:
 | Bert-RE     |  80.5 |85.8 |79.9 |79.4   |  79.3   |80.5|80.0|78.1|76.2|79.8| 80.0    |
 | Albert-NER  |  91.4 |92.9 |91.9 |91.5   |  90.7   |91.6|91.9|89.9|90.6|90.7| 91.3    |
 | Albert-RE   |  83.9 |86.8 |82.8 |83.2   |  82.2   |82.4|84.5|82.3|81.9|82.2| 83.2    |
+
+
+## Extension on Ablation Study
+As requested, we release ablation NER/RE results of 5 runs in encoding scheme.
+
+| Model/seed |  0         |  1       | 2        | 3          |  4         | Mean       | Standard Deviation | 
+| ---------- |  --------- |--------- |--------- |----------- | ---------- | ---------- |--------------------|
+| Original   | 66.8/38.4  |66.9/36.9 |66.4/36.3 |68.0/38.9   | 67.7/37.7  | 67.2/37.6  | 0.67/1.06          |
+| Sequential | 68.7/36.9  |68.0/35.9 |68.5/34.8 |67.7/36.9   | 67.0/36.2  | 68.0/36.1  | 0.68/0.87          |
+| Parallel   | 67.0/35.1  |-         |-         |-           | -          | -          |-                   |
 
 
 ## Robustness Against Input Perturbation
