@@ -257,13 +257,14 @@ F1 results on ADE:
 
 
 ## Extension on Ablation Study
-As requested, we release ablation NER/RE results of 5 runs in encoding scheme.
+As requested, we release ablation NER/RE results of 5 runs in the category of encoding scheme and decoding strategy.
 
 | Model/seed |  0         |  1       | 2        | 3          |  4         | Mean       | Standard Deviation | 
 | ---------- |  --------- |--------- |--------- |----------- | ---------- | ---------- |--------------------|
 | Original   | 66.8/38.4  |66.9/36.9 |66.4/36.3 |68.0/38.9   | 67.7/37.7  | 67.2/37.6  | 0.67/1.06          |
 | Sequential | 68.7/36.9  |68.0/35.9 |68.5/34.8 |67.7/36.9   | 67.0/36.2  | 68.0/36.1  | 0.68/0.87          |
 | Parallel   | 67.0/35.1  |67.2/36.6 |67.9/37.4 |68.0/37.9   | 66.9/34.6  | 67.4/36.3  | 0.51/1.43          |
+| Selective  | 68.1/37.4  |67.0/35.9 |67.5/38.5 |66.8/35.1   | 67.7/36.7  | 67.4/36.7  | 0.53/1.32          |
 
 
 ## Robustness Against Input Perturbation
