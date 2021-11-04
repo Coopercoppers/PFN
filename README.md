@@ -1,5 +1,5 @@
 # PFN (Partition Filter Network)
-This repository contains codes of the official implementation for the paper **A Partition Filter Network for Joint Entity and Relation Extraction** EMNLP 2021 [[PDF]](https://arxiv.org/pdf/2108.12202.pdf) [[PPT]](https://docs.google.com/presentation/d/1CiHWBdwoQexY0JgSP_JxC-QFciZBmTGo/edit?usp=sharing&ouid=107947850659680847257&rtpof=true&sd=true)
+This repository contains codes of the official implementation for the paper [A Partition Filter Network for Joint Entity and Relation Extraction](https://aclanthology.org/2021.emnlp-main.17.pdf) EMNLP 2021
 
 ## Quick links
 * [Model Overview](#Model-Overview)
@@ -28,35 +28,34 @@ filter encoder** designed for multi-task learning.
 ## Preparation
 
 ### Environment Setup
-The experiments were performed using one single NVIDIA-RTX3090 GPU. The dependency packages can be installed with the following command:
+The experiments were performed using one single NVIDIA-RTX3090 GPU. The dependency packages can be installed with the command:
 ```
 pip install -r requirements.txt
 ```
-Other configurations are:  
+Other configurations we use are:  
 * python == 3.7.10
 * cuda == 11.1
 * cudnn == 8
 
 
 ### Data Acquisition and Preprocessing
-**This is the first work that covers all the mainstream English datasets for evaluation**, including **NYT**, **WebNLG**, **ADE**, **ACE05**, **ACE04**, **SCIERC**, **CoNLL04**. 
+This is the first work that covers all the mainstream English datasets for evaluation, including **NYT**, **WebNLG**, **ADE**, **ACE05**, **ACE04**, **SCIERC**, **CoNLL04**. 
 
 Please follow the instructions of reademe.md in each dataset folder in ./data/ for data acquisition and preprocessing.  
 
 ### Custom Dataset
 We suggest that you use **PFN-nested** for other datasets, especially Chinese datasets.  
-
 **PFN-nested** is an enhanced version of PFN. It is better in leveraging entity tail information and capable of handling nested triple prediction.
-
-**---Usage**
-
-Replace the files (except for readme.md) in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start. 
 
 **---Reasons for Not Using the Original Model**
 
 The orignal one will not be able to decode **triples with head-overlap entities**. For example, if **New York** and **New York City** are both entities, and there exists a RE prediction such as (New, cityof, USA), we cannot know what **New** corresponds to.  
 
 Luckily, the impact on evaluation of English dataset is limited, since such triple is either filtered out (for ADE) or rare (one in test set of SciERC, one in ACE04, zero in other datasets).  
+
+**---Usage**
+
+Replace the files (except for readme.md) in the root directory with the files in the PFN-nested folder, then follow the directions in Quick Start. 
 
 
 **---Performance comparison in SciERC**
@@ -204,13 +203,6 @@ python main.py \
 
 
 ## Pre-trained Models and Training Logs
-For each dataset, we provide:
-* Model checkpoint with best results on the dev set
-* Training log
-* Result file with loss, NER and RE results of every epoch
-
-With the right GPU device and configurations, your training results should be identical with figures in the result files.
-
 
 ### Download Links
 Due to limited space in google drive, 10-fold model checkpoints of ADE are not available to you.  
@@ -283,13 +275,16 @@ For each test file, move it to ./data/ACE2005/ and rename it as **test_triples.j
 Please cite our paper if it's helpful to you in your research.
 
 ```
-@misc{yan2021partition,
-      title={A Partition Filter Network for Joint Entity and Relation Extraction}, 
-      author={Zhiheng Yan and Chong Zhang and Jinlan Fu and Qi Zhang and Zhongyu Wei},
-      year={2021},
-      eprint={2108.12202},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{yan-etal-2021-partition,
+    title = "A Partition Filter Network for Joint Entity and Relation Extraction",
+    author = "Yan, Zhiheng  and  Zhang, Chong  and  Fu, Jinlan  and  Zhang, Qi  and  Wei, Zhongyu",
+    booktitle = "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2021",
+    address = "Online and Punta Cana, Dominican Republic",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.emnlp-main.17",
+    pages = "185--197"
 }
 ```
 
