@@ -3,6 +3,8 @@ This repository contains codes of the official implementation for the paper [A P
 
 ## Quick links
 * [Model Overview](#Model-Overview)
+  * [Framework](#Framework)
+  * [Equation Explanation](#Equation-Explanation)
 * [Preparation](#Preparation)
   * [Environment Setup](#Environment-setup)
   * [Data Acquisition and Preprocessing](#Data-Acquisition-and-Preprocessing)
@@ -21,9 +23,20 @@ This repository contains codes of the official implementation for the paper [A P
 
 
 ## Model Overview
+
+### Framework
+
 ![](./fig/model.png)
 In this work, we present a new framework equipped with a novel recurrent encoder named **partition
 filter encoder** designed for multi-task learning.
+
+
+### Equation Explanation
+
+The explanation for equation 2 and 3 is displayed here.
+![](./fig/gate.png)
+![](./fig/partition.png)
+
 
 ## Preparation
 
