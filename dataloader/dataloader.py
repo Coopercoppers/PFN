@@ -169,7 +169,7 @@ def ade_and_sci_preprocess(data, dataset):
 
 
 def dataloader(args, ner2idx, rel2idx):
-    path = "data/" + args.data
+    path = args.data
 
     if args.data == "ADE":
         train_raw_data = json_load(path, "train_triples.json")
@@ -205,15 +205,15 @@ def dataloader(args, ner2idx, rel2idx):
         dev_data = ace_preprocess(dev_data)
 
 
-    elif args.data=="ADE" or args.data=="SCIERC" or args.data=="CONLL04":
+    else :# args.data=="ADE" or args.data=="SCIERC" or args.data=="CONLL04":
         train_data = ade_and_sci_preprocess(train_data, args.data)
         test_data = ade_and_sci_preprocess(test_data, args.data)
         dev_data = ade_and_sci_preprocess(dev_data, args.data)
 
-    else:
-        train_data = nyt_and_webnlg_preprocess(train_data)
-        test_data = nyt_and_webnlg_preprocess(test_data)
-        dev_data = nyt_and_webnlg_preprocess(dev_data)
+    # else:
+    #     train_data = nyt_and_webnlg_preprocess(train_data)
+    #     test_data = nyt_and_webnlg_preprocess(test_data)
+    #     dev_data = nyt_and_webnlg_preprocess(dev_data)
 
 
     train_dataset = dataprocess(train_data, args.embed_mode, args.max_seq_len)
