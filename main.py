@@ -138,7 +138,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     set_seed(args.seed)
 
-    output_dir = "save/" + args.output_file
+    output_dir = args.output_file
     os.mkdir(output_dir)
 
     logger.addHandler(logging.FileHandler(output_dir + "/" + args.output_file + ".log", 'w'))
