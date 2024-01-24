@@ -13,7 +13,139 @@ from model.pfn import PFN
 from dataloader.dataloader import dataloader
 import torch.optim as optim
 from tqdm import tqdm
+import torch.nn.functional as F
+import torch.nn.init as init
+from torch.utils.data.sampler import SubsetRandomSampler
+from torch.utils.data import Dataset,DataLoader
+from helpers_al import VAE, query_samples, Discriminator
 
+
+def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch):
+    for epoch in range(args.epoch):
+        steps, train_loss = 0, 0
+
+        model.train()
+        for data in tqdm(train_batch):
+
+            steps+=1
+            optimizer.zero_grad()
+
+            text = data[0]
+            ner_label = data[1].to(device)
+            re_label = data[2].to(device)
+            mask = data[-1].to(device)
+
+            ner_pred, re_pred = model(text, mask)
+            loss = BCEloss(ner_pred, ner_label, re_pred, re_label)
+
+            loss.backward()
+
+            train_loss += loss.item()
+            torch.nn.utils.clip_grad_norm_(parameters=model.parameters(), max_norm=args.clip)
+            optimizer.step()
+
+            if steps % args.steps == 0:
+                logger.info("Epoch: {}, step: {} / {}, loss = {:.4f}".format
+                            (epoch, steps, len(train_batch), train_loss / steps))
+
+        logger.info("------ Training Set Results ------")
+        logger.info("loss : {:.4f}".format(train_loss / steps))
+
+        if args.do_eval:
+            model.eval()
+            logger.info("------ Testing ------")
+            dev_triple, dev_entity, dev_loss = evaluate(dev_batch, rel2idx, ner2idx, args, "dev")
+            test_triple, test_entity, test_loss = evaluate(test_batch, rel2idx, ner2idx, args, "test")
+            average_f1 = dev_triple["f"] + dev_entity["f"]
+
+            if epoch == 0 or average_f1 > best_result:
+                best_result = average_f1
+                triple_best = test_triple
+                entity_best = test_entity
+                torch.save(model.state_dict(), output_dir + "/" + model_file)
+                logger.info("Best result on dev saved!!!")
+
+
+            saved_file.save("{} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f}".format(epoch, train_loss/steps, dev_loss, test_loss, dev_entity["f"],
+                                            dev_triple["f"], test_entity["f"], test_triple["f"]))
+
+    saved_file.save("best test result ner-p: {:.4f} \t ner-r: {:.4f} \t ner-f: {:.4f} \t re-p: {:.4f} \t re-r: {:.4f} \t re-f: {:.4f} ".format(entity_best["p"],
+                    entity_best["r"], entity_best["f"], triple_best["p"], triple_best["r"], triple_best["f"]))
+
+
+
+def kaiming_init(m):
+    if isinstance(m, (nn.Linear, nn.Conv2d)):
+        init.kaiming_normal(m.weight)
+        if m.bias is not None:
+            m.bias.data.fill_(0)
+    elif isinstance(m, (nn.BatchNorm1d, nn.BatchNorm2d)):
+        m.weight.data.fill_(1)
+        if m.bias is not None:
+            m.bias.data.fill_(0)
+
+        
+class LossNet(nn.Module):
+    def __init__(self, feature_sizes=[32, 16, 8, 4], num_channels=[64, 128, 256, 512], interm_dim=128):
+        super(LossNet, self).__init__()
+        
+        self.GAP1 = nn.AvgPool2d(feature_sizes[0])
+        self.GAP2 = nn.AvgPool2d(feature_sizes[1])
+        self.GAP3 = nn.AvgPool2d(feature_sizes[2])
+        self.GAP4 = nn.AvgPool2d(feature_sizes[3])
+
+        self.FC1 = nn.Linear(num_channels[0]*9, interm_dim)
+        self.FC2 = nn.Linear(num_channels[1]*9, interm_dim)
+        self.FC3 = nn.Linear(num_channels[2]*9, interm_dim)
+        self.FC4 = nn.Linear(num_channels[3]*9, interm_dim)
+
+        self.linear = nn.Linear(4 * interm_dim, 1)
+    
+    def forward(self, features):
+        out1 = self.GAP1(features[0])
+        out1 = out1.view(out1.size(0), -1)
+        out1 = F.relu(self.FC1(out1))
+
+        out2 = self.GAP2(features[1])
+        out2 = out2.view(out2.size(0), -1)
+        out2 = F.relu(self.FC2(out2))
+
+        out3 = self.GAP3(features[2])
+        out3 = out3.view(out3.size(0), -1)
+        out3 = F.relu(self.FC3(out3))
+
+        out4 = self.GAP4(features[3])
+        out4 = out4.view(out4.size(0), -1)
+        out4 = F.relu(self.FC4(out4))
+
+        out = self.linear(torch.cat((out1, out2, out3, out4), 1))
+        return out
+    
+
+    
+class BasicBlock(nn.Module):
+    
+    def __init__(self, in_planes, planes, expansion, stride=1):
+        super(BasicBlock, self).__init__()
+        self.expansion = expansion
+        self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(planes)
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(planes)
+
+        self.shortcut = nn.Sequential()
+        if stride != 1 or in_planes != self.expansion*planes:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_planes, self.expansion*planes, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(self.expansion*planes)
+            )
+
+    def forward(self, x):
+        out = F.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        out += self.shortcut(x)
+        out = F.relu(out)
+        return out
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S',
@@ -153,8 +285,42 @@ if __name__ == '__main__':
     with open(args.data + "/rel2idx.json", "r") as f:
         rel2idx = json.load(f)
 
-    train_batch, test_batch, dev_batch = dataloader(args, ner2idx, rel2idx)
+    train_dataset, test_dataset, dev_dataset, collate_fn, train_unlabeled = dataloader(args, ner2idx, rel2idx)
 
+    adden = 50 # roughly no_train/cycles
+    no_train = len(train_dataset)
+    ADDENDUM = adden
+    NUM_TRAIN = no_train
+    indices = list(range(NUM_TRAIN))
+    random.shuffle(indices)
+
+    labeled_set = indices[:ADDENDUM]
+    unlabeled_set = [x for x in indices if x not in labeled_set]
+
+    train_batch = DataLoader(dataset=train_dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(labeled_set), 
+                                shuffle=True, pin_memory=True, collate_fn=collate_fn)
+    test_batch = DataLoader(dataset=test_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
+
+    dev_batch = DataLoader(dataset=dev_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
+
+    
+    vae = VAE()
+    if args.embed_mode == "albert":
+            input_size = 4096
+    else:
+        input_size = 768
+
+    model = PFN(args, input_size, ner2idx, rel2idx)
+    discriminator = Discriminator(32)
+    loss_module = LossNet().to(device)
+    # models = {'backbone': model['backbone'], 'module': model['module'], 'vae': vae, 'discriminator': discriminator}
+    models      = {'backbone': model, 'module': loss_module, 'vae': vae, 'discriminator': discriminator}
+    
+
+    vae = models['vae']
+    # discriminator = models['discriminator']
+    # task_model = models['backbone']
+    ranker = models['module']
 
     if args.do_train:
         logger.info("------Training------")
@@ -163,7 +329,7 @@ if __name__ == '__main__':
         else:
             input_size = 768
 
-        model = PFN(args, input_size, ner2idx, rel2idx)
+        
         model.to(device)
 
 
@@ -178,55 +344,25 @@ if __name__ == '__main__':
         best_result = 0
         triple_best = None
         entity_best = None
+        method = 'TA-VAAL'
+        for cycle in range(7):
+            random.shuffle(unlabeled_set)
+            subset = unlabeled_set[:args['SUBSET']]
 
-        for epoch in range(args.epoch):
-            steps, train_loss = 0, 0
+            train(args, models['backbone'], train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch)
 
-            model.train()
-            for data in tqdm(train_batch):
+            arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args)
 
-                steps+=1
-                optimizer.zero_grad()
-
-                text = data[0]
-                ner_label = data[1].to(device)
-                re_label = data[2].to(device)
-                mask = data[-1].to(device)
-
-                ner_pred, re_pred = model(text, mask)
-                loss = BCEloss(ner_pred, ner_label, re_pred, re_label)
-
-                loss.backward()
-
-                train_loss += loss.item()
-                torch.nn.utils.clip_grad_norm_(parameters=model.parameters(), max_norm=args.clip)
-                optimizer.step()
-
-                if steps % args.steps == 0:
-                    logger.info("Epoch: {}, step: {} / {}, loss = {:.4f}".format
-                                (epoch, steps, len(train_batch), train_loss / steps))
-
-            logger.info("------ Training Set Results ------")
-            logger.info("loss : {:.4f}".format(train_loss / steps))
-
-            if args.do_eval:
-                model.eval()
-                logger.info("------ Testing ------")
-                dev_triple, dev_entity, dev_loss = evaluate(dev_batch, rel2idx, ner2idx, args, "dev")
-                test_triple, test_entity, test_loss = evaluate(test_batch, rel2idx, ner2idx, args, "test")
-                average_f1 = dev_triple["f"] + dev_entity["f"]
-
-                if epoch == 0 or average_f1 > best_result:
-                    best_result = average_f1
-                    triple_best = test_triple
-                    entity_best = test_entity
-                    torch.save(model.state_dict(), output_dir + "/" + model_file)
-                    logger.info("Best result on dev saved!!!")
-
-
-                saved_file.save("{} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f} \t {:.4f}".format(epoch, train_loss/steps, dev_loss, test_loss, dev_entity["f"],
-                                                   dev_triple["f"], test_entity["f"], test_triple["f"]))
-
-        saved_file.save("best test result ner-p: {:.4f} \t ner-r: {:.4f} \t ner-f: {:.4f} \t re-p: {:.4f} \t re-r: {:.4f} \t re-f: {:.4f} ".format(entity_best["p"],
-                        entity_best["r"], entity_best["f"], triple_best["p"], triple_best["r"], triple_best["f"]))
+            # new_list = list(torch.tensor(subset)[arg][:args['INCREMENTAL']].numpy())
+            labeled_set += list(torch.tensor(subset)[arg][-args['INCREMENTAL']:].numpy())
+            listd = list(torch.tensor(subset)[arg][:-args['INCREMENTAL']].numpy()) 
+            unlabeled_set = listd + unlabeled_set[args['SUBSET']:]
+            print(len(labeled_set), min(labeled_set), max(labeled_set))
+            
+            # np.save("saved_history/labelled-" + args['group'] + str(cycle) + ".npy", np.array(labeled_set))
+            
+            # Create a new dataloader for the updated labeled dataset
+            train_batch = DataLoader(train_dataset, batch_size=args['BATCH'], 
+                                            sampler=SubsetRandomSampler(labeled_set), 
+                                            pin_memory=True, drop_last=True)
 

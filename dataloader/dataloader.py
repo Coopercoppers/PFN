@@ -4,6 +4,7 @@ from transformers import AlbertTokenizer, AutoTokenizer
 from torch.utils.data import Dataset,DataLoader
 import random
 
+
 class dataprocess(Dataset):
     def __init__(self, data, embed_mode, max_seq_len):
         self.data = data
@@ -220,11 +221,24 @@ def dataloader(args, ner2idx, rel2idx):
     test_dataset = dataprocess(test_data, args.embed_mode, args.max_seq_len)
     dev_dataset = dataprocess(dev_data, args.embed_mode, args.max_seq_len)
     collate_fn = collater(ner2idx, rel2idx)
+    train_unlabeled = dataprocess(train_data, args.embed_mode, args.max_seq_len)
+    
+    # adden = 50 # roughly no_train/cycles
+    # no_train = len(train_dataset)
+    # ADDENDUM = adden
+    # NUM_TRAIN = no_train
+    # indices = list(range(NUM_TRAIN))
+    # random.shuffle(indices)
 
+    # labeled_set = indices[:ADDENDUM]
+    # unlabeled_set = [x for x in indices if x not in labeled_set]
 
-    train_batch = DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True, pin_memory=True, collate_fn=collate_fn)
-    test_batch = DataLoader(dataset=test_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
-    dev_batch = DataLoader(dataset=dev_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
+    # train_batch = DataLoader(dataset=train_dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(labeled_set), 
+    #                             shuffle=True, pin_memory=True, collate_fn=collate_fn)
+    # test_batch = DataLoader(dataset=test_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
+    # dev_batch = DataLoader(dataset=dev_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
+    # train_unlabeled = DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True, pin_memory=True, collate_fn=collate_fn)
 
+    
 
-    return train_batch, test_batch, dev_batch
+    return train_dataset, test_dataset, dev_dataset, collate_fn, train_unlabeled
