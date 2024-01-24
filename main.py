@@ -353,7 +353,7 @@ if __name__ == '__main__':
 
             arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args)
 
-            # new_list = list(torch.tensor(subset)[arg][:args['INCREMENTAL']].numpy())
+            new_list = list(torch.tensor(subset)[arg][:args['INCREMENTAL']].numpy())
             labeled_set += list(torch.tensor(subset)[arg][-args['INCREMENTAL']:].numpy())
             listd = list(torch.tensor(subset)[arg][:-args['INCREMENTAL']].numpy()) 
             unlabeled_set = listd + unlabeled_set[args['SUBSET']:]
