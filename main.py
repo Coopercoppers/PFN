@@ -347,7 +347,7 @@ if __name__ == '__main__':
         method = 'TA-VAAL'
         for cycle in range(7):
             random.shuffle(unlabeled_set)
-            subset = unlabeled_set[:args['SUBSET']]
+            subset = unlabeled_set[:50]
 
             train(args, models['backbone'], train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch)
 
