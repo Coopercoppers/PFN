@@ -26,13 +26,13 @@ def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2
 
         model.train()
         for data in tqdm(train_batch):
-
             steps+=1
             optimizer.zero_grad()
 
             text = data[0]
             ner_label = data[1].to(device)
             re_label = data[2].to(device)
+            print(ner_label.shape)
             mask = data[-1].to(device)
 
             ner_pred, re_pred, features = model(text, mask)
