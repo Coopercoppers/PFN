@@ -351,7 +351,7 @@ if __name__ == '__main__':
 
             train(args, models['backbone'], train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch)
 
-            arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args)
+            arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn)
 
             new_list = list(torch.tensor(subset)[arg][:args['INCREMENTAL']].numpy())
             labeled_set += list(torch.tensor(subset)[arg][-args['INCREMENTAL']:].numpy())

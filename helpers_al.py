@@ -266,17 +266,17 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                 args['writer-train'].add_scalar(str(cycle) + ' Total DSC Loss ',
                         dsc_loss.item(), iter_count)
 
-def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args):
+def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn):
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
     if method == 'TA-VAAL':
         # Create unlabeled dataloader for the unlabeled subset
         unlabeled_loader = DataLoader(data_unlabeled, batch_size=args.batch_size, 
                                     sampler=SubsetSequentialSampler(subset), 
-                                    pin_memory=True)
+                                    pin_memory=True, collate_fn= collate_fn)
         labeled_loader = DataLoader(data_unlabeled, batch_size=args.batch_size, 
                                     sampler=SubsetSequentialSampler(labeled_set), 
-                                    pin_memory=True)
+                                    pin_memory=True, collate_fn= collate_fn)
         
         vae = VAE()
         discriminator = Discriminator(32)
