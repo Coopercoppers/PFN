@@ -263,9 +263,11 @@ class PFN(nn.Module):
         if self.training:
             x = self.dropout(x)
 
+        features = x
+
         h_ner, h_re, h_share = self.feature_extractor(x)
 
         ner_score = self.ner(h_ner, h_share, mask)
         re_core = self.re(h_re, h_share, mask)
-        return ner_score, re_core
+        return ner_score, re_core, features
 

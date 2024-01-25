@@ -35,7 +35,7 @@ def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2
             re_label = data[2].to(device)
             mask = data[-1].to(device)
 
-            ner_pred, re_pred = model(text, mask)
+            ner_pred, re_pred, features = model(text, mask)
             loss = BCEloss(ner_pred, ner_label, re_pred, re_label)
 
             loss.backward()
@@ -54,8 +54,8 @@ def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2
         if args.do_eval:
             model.eval()
             logger.info("------ Testing ------")
-            dev_triple, dev_entity, dev_loss = evaluate(dev_batch, rel2idx, ner2idx, args, "dev")
-            test_triple, test_entity, test_loss = evaluate(test_batch, rel2idx, ner2idx, args, "test")
+            dev_triple, dev_entity, dev_loss = evaluate(dev_batch, rel2idx, ner2idx, args, "dev", model)
+            test_triple, test_entity, test_loss = evaluate(test_batch, rel2idx, ner2idx, args, "test", model)
             average_f1 = dev_triple["f"] + dev_entity["f"]
 
             if epoch == 0 or average_f1 > best_result:
@@ -153,7 +153,7 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-def evaluate(test_batch, rel2idx, ner2idx, args, test_or_dev):
+def evaluate(test_batch, rel2idx, ner2idx, args, test_or_dev, model):
     steps, test_loss = 0, 0
     total_triple_num = [0, 0, 0]
     total_entity_num = [0, 0, 0]
@@ -174,7 +174,7 @@ def evaluate(test_batch, rel2idx, ner2idx, args, test_or_dev):
             re_label = data[2].to(device)
             mask = data[-1].to(device)
 
-            ner_pred, re_pred = model(text, mask)
+            ner_pred, re_pred, features = model(text, mask)
             loss = BCEloss(ner_pred, ner_label, re_pred, re_label)
             test_loss += loss
 
