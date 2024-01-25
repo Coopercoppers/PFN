@@ -5,6 +5,7 @@ import numpy as np
 import torch.nn.init as init
 import torch.optim as optim
 from torch.utils.data import Dataset,DataLoader
+from transformers import AutoTokenizer, AutoModel, AlbertTokenizer, AlbertModel
 
 class SubsetSequentialSampler(torch.utils.data.Sampler):
     r"""Samples elements sequentially from a given list of indices, without replacement.
@@ -169,12 +170,31 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
     print('Num of Iteration:', str(train_iterations))
     
     for iter_count in range(train_iterations):
-        labeled_imgs, labels = next(labeled_data)
+        data_sub_label = next(labeled_data)
+        labeled_imgs = data_sub_label[0]
         unlabeled_imgs = next(unlabeled_data)[0]
+
+        if args.embed_mode == 'albert':
+            tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
+            bert = AlbertModel.from_pretrained("albert-xxlarge-v1")
+        elif args.embed_mode == 'bert_cased':
+            tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+            bert = AutoModel.from_pretrained("bert-base-cased")
+        elif args.embed_mode == 'scibert':
+            tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased")
+            bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased")
+
+        labeled_imgs = tokenizer(labeled_imgs, return_tensors="pt",
+                                  padding='longest',
+                                  is_split_into_words=True).to(device)
+        
+        unlabeled_imgs = tokenizer(unlabeled_imgs, return_tensors="pt",
+                                  padding='longest',
+                                  is_split_into_words=True).to(device)
         
         labeled_imgs = labeled_imgs.to(device)
         unlabeled_imgs = unlabeled_imgs.to(device)
-        labels = labels.to(device)    
+        # labels = labels.to(device)    
         
         if iter_count == 0 :
             r_l_0 = torch.from_numpy(np.random.uniform(0, 1, size=(labeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
@@ -226,7 +246,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                 
                 labeled_imgs = labeled_imgs.to(device)
                 unlabeled_imgs = unlabeled_imgs.to(device)
-                labels = labels.to(device)                
+                # labels = labels.to(device)                
 
         # Discriminator step
         for count in range(num_adv_steps):
@@ -257,7 +277,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
 
                 labeled_imgs = labeled_imgs.to(device)
                 unlabeled_imgs = unlabeled_imgs.to(device)
-                labels = labels.to(device)                
+                # labels = labels.to(device)                
                 
             if iter_count % 50 == 0:
                 # print("Iteration: " + str(iter_count) + "  vae_loss: " + str(total_vae_loss.item()) + " dsc_loss: " +str(dsc_loss.item()))
