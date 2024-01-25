@@ -298,7 +298,7 @@ if __name__ == '__main__':
     unlabeled_set = [x for x in indices if x not in labeled_set]
 
     train_batch = DataLoader(dataset=train_dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(labeled_set), 
-                                shuffle=True, pin_memory=True, collate_fn=collate_fn)
+                                pin_memory=True, collate_fn=collate_fn)
     test_batch = DataLoader(dataset=test_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
 
     dev_batch = DataLoader(dataset=dev_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
