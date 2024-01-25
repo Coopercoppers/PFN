@@ -271,10 +271,10 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
     if method == 'TA-VAAL':
         # Create unlabeled dataloader for the unlabeled subset
-        unlabeled_loader = DataLoader(data_unlabeled, batch_size=args['BATCH'], 
+        unlabeled_loader = DataLoader(data_unlabeled, batch_size=args.batch_size, 
                                     sampler=SubsetSequentialSampler(subset), 
                                     pin_memory=True)
-        labeled_loader = DataLoader(data_unlabeled, batch_size=args['BATCH'], 
+        labeled_loader = DataLoader(data_unlabeled, batch_size=args.batch_size, 
                                     sampler=SubsetSequentialSampler(labeled_set), 
                                     pin_memory=True)
         
