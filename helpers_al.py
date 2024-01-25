@@ -339,8 +339,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
 def read_data(dataloader, labels=True):
     if labels:
         while True:
-            for img, label,_ in dataloader:
-                yield img, label
+            for data in dataloader:
+                yield data
     else:
         while True:
             for img, _, _ in dataloader:
