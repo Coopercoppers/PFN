@@ -274,6 +274,6 @@ class PFN(nn.Module):
 
         ner_score = self.ner(h_ner, h_share, mask)
         re_core = self.re(h_re, h_share, mask)
-        print(re_core.shape)
+        # print(re_core.shape)
         return ner_score, re_core, features
 

@@ -197,7 +197,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         labeled_imgs = labeled_imgs.to(device)
         unlabeled_imgs = unlabeled_imgs.to(device)
         # labels = labels.to(device)
-        # labeled_imgs = labeled_imgs.transpose(0,1)    
+        # labeled_imgs = labeled_imgs.transpose(0,1)
+        print("in train_vaal")    
         print(labeled_imgs.shape)
         if iter_count == 0 :
             r_l_0 = torch.from_numpy(np.random.uniform(0, 1, size=(labeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
