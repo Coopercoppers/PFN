@@ -260,11 +260,11 @@ class PFN(nn.Module):
         # print("after tokenizing")
         # print(x.shape)
         x = self.bert(**x)[0]
-        print("after bert")
-        print(x.shape)
+        # print("after bert")
+        # print(x.shape)
         x = x.transpose(0, 1)
-        print("after transpose")
-        print(x.shape)
+        # print("after transpose")
+        # print(x.shape)
         if self.training:
             x = self.dropout(x)
 
