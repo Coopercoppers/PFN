@@ -197,9 +197,10 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         labeled_imgs = labeled_imgs.to(device)
         unlabeled_imgs = unlabeled_imgs.to(device)
         # labels = labels.to(device)
+        
         # labeled_imgs = labeled_imgs.transpose(0,1)
-        print("in train_vaal")    
-        print(labeled_imgs.shape)
+        # print("in train_vaal")    
+        # print(labeled_imgs.shape)
         if iter_count == 0 :
             r_l_0 = torch.from_numpy(np.random.uniform(0, 1, size=(labeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
             r_u_0 = torch.from_numpy(np.random.uniform(0, 1, size=(unlabeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
@@ -218,6 +219,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             r_l_s = torch.sigmoid(r_l).detach()
             r_u_s = torch.sigmoid(r_u).detach()   
             
+        labeled_imgs = np.reshape(labeled_imgs, (labeled_imgs[0], 3, 16, 48))
+        unlabeled_imgs = np.reshape(unlabeled_imgs, (unlabeled_imgs[0], 3, 16, 48))
         # VAE step
         for count in range(num_vae_steps): # num_vae_steps
             recon, _, mu, logvar = vae(r_l_s,labeled_imgs)
