@@ -32,7 +32,6 @@ def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2
             text = data[0]
             ner_label = data[1].to(device)
             re_label = data[2].to(device)
-            print(ner_label.shape)
             mask = data[-1].to(device)
 
             ner_pred, re_pred, features = model(text, mask)
@@ -353,10 +352,10 @@ if __name__ == '__main__':
 
             arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn)
 
-            new_list = list(torch.tensor(subset)[arg][:args['INCREMENTAL']].numpy())
-            labeled_set += list(torch.tensor(subset)[arg][-args['INCREMENTAL']:].numpy())
-            listd = list(torch.tensor(subset)[arg][:-args['INCREMENTAL']].numpy()) 
-            unlabeled_set = listd + unlabeled_set[args['SUBSET']:]
+            new_list = list(torch.tensor(subset)[arg][:30].numpy())
+            labeled_set += list(torch.tensor(subset)[arg][-30:].numpy())
+            listd = list(torch.tensor(subset)[arg][:-30].numpy()) 
+            unlabeled_set = listd + unlabeled_set[50:]
             print(len(labeled_set), min(labeled_set), max(labeled_set))
             
             # np.save("saved_history/labelled-" + args['group'] + str(cycle) + ".npy", np.array(labeled_set))

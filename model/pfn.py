@@ -257,9 +257,14 @@ class PFN(nn.Module):
         x = self.tokenizer(x, return_tensors="pt",
                                   padding='longest',
                                   is_split_into_words=True).to(device)
+        print("after tokenizing")
+        print(x.shape)
         x = self.bert(**x)[0]
+        print("after bert")
+        print(x.shape)
         x = x.transpose(0, 1)
-
+        print("after transpose")
+        print(x.shape)
         if self.training:
             x = self.dropout(x)
 
