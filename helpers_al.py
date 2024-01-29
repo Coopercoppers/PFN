@@ -220,8 +220,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             r_u_s = torch.sigmoid(r_u).detach()   
         
         print(labeled_imgs.shape[0])
-        labeled_imgs = np.reshape(labeled_imgs, (labeled_imgs.shape[0], 3, 16, 48))
-        unlabeled_imgs = np.reshape(unlabeled_imgs, (unlabeled_imgs.shape[0], 3, 16, 48))
+        labeled_imgs = labeled_imgs.reshape(labeled_imgs.shape[0],3,16,48)
+        unlabeled_imgs = unlabeled_imgs.reshape(unlabeled_imgs.shape[0],3,16,48)
         # VAE step
         for count in range(num_vae_steps): # num_vae_steps
             recon, _, mu, logvar = vae(r_l_s,labeled_imgs)
