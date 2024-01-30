@@ -218,8 +218,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         else:
             r_l_s = torch.sigmoid(r_l).detach()
             r_u_s = torch.sigmoid(r_u).detach()   
-        
         print(labeled_imgs.shape)
+        # print(labeled_imgs.shape)
         desired_size = (20, 100, 768)
         pad_dimensions = []
         for original_size, desired_size in zip(labeled_imgs.size(), desired_size):
@@ -230,12 +230,17 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         pad_dimensions = tuple(pad_dimensions)
         labeled_imgs= torch.nn.functional.pad(labeled_imgs, pad_dimensions)
         print(labeled_imgs.shape)
-
-
-        labeled_imgs = labeled_imgs.reshape(labeled_imgs.shape[0],3,102,128)
-        # print("done labeled img")
         print(unlabeled_imgs.shape)
-        unlabeled_imgs = unlabeled_imgs.reshape(unlabeled_imgs.shape[0],3,102,128)
+        for original_size, desired_size in zip(unlabeled_imgs.size(), desired_size):
+            pad_size = max(0, desired_size - original_size)
+            pad_dimensions.append(0)  # Pad with zeros at the end
+            pad_dimensions.append(pad_size)
+        # Pad the tensor
+        pad_dimensions = tuple(pad_dimensions)
+        unlabeled_imgs= torch.nn.functional.pad(unlabeled_imgs, pad_dimensions)
+        print(unlabeled_imgs.shape)
+
+        # print("done labeled img")
         # VAE step
         for count in range(num_vae_steps): # num_vae_steps
             recon, _, mu, logvar = vae(r_l_s,labeled_imgs)
