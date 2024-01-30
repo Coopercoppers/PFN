@@ -220,6 +220,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             r_u_s = torch.sigmoid(r_u).detach()   
         
         print(labeled_imgs.shape)
+        desired_size = (20, 100, 768)
         pad_dimensions = []
         for original_size, desired_size in zip(labeled_imgs.size(), desired_size):
             pad_size = max(0, desired_size - original_size)
