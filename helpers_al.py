@@ -231,6 +231,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         labeled_imgs= torch.nn.functional.pad(labeled_imgs, pad_dimensions)
         print(labeled_imgs.shape)
         print(unlabeled_imgs.shape)
+        pad_dimensions = []
         desired_size = (20, 100, 768)
         for original_size, desired_size in zip(unlabeled_imgs.size(), desired_size):
             pad_size = max(0, desired_size - original_size)
