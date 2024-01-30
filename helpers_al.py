@@ -240,8 +240,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         pad_dimensions = tuple(pad_dimensions)
         unlabeled_imgs= torch.nn.functional.pad(unlabeled_imgs, pad_dimensions)
         # print(unlabeled_imgs.shape)
-        labeled_imgs = np.reshape(labeled_imgs, (labeled_imgs.shape[0], 3, 128, 200))
-        unlabeled_imgs = np.reshape(unlabeled_imgs, (unlabeled_imgs.shape[0], 3, 128, 200))
+        labeled_imgs = labeled_imgs.reshape([labeled_imgs.shape[0], 3, 128, 200])
+        unlabeled_imgs = unlabeled_imgs.reshape([unlabeled_imgs.shape[0], 3, 128, 200])
 
         # print("done labeled img")
         # VAE step
