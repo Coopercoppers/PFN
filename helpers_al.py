@@ -218,7 +218,6 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         else:
             r_l_s = torch.sigmoid(r_l).detach()
             r_u_s = torch.sigmoid(r_u).detach()   
-        print(labeled_imgs.shape)
         # print(labeled_imgs.shape)
         desired_size = (20, 100, 768)
         pad_dimensions = []
@@ -229,8 +228,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         # Pad the tensor
         pad_dimensions = tuple(pad_dimensions)
         labeled_imgs= torch.nn.functional.pad(labeled_imgs, pad_dimensions)
-        print(labeled_imgs.shape)
-        print(unlabeled_imgs.shape)
+        # print(labeled_imgs.shape)
+        # print(unlabeled_imgs.shape)
         pad_dimensions = []
         desired_size = (20, 100, 768)
         for original_size, desired_size in zip(unlabeled_imgs.size(), desired_size):
@@ -240,7 +239,9 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         # Pad the tensor
         pad_dimensions = tuple(pad_dimensions)
         unlabeled_imgs= torch.nn.functional.pad(unlabeled_imgs, pad_dimensions)
-        print(unlabeled_imgs.shape)
+        # print(unlabeled_imgs.shape)
+        labeled_imgs = np.reshape(labeled_imgs, (labeled_imgs.shape[0], 3, 128, 200))
+        unlabeled_imgs = np.reshape(unlabeled_imgs, (unlabeled_imgs.shape[0], 3, 128, 200))
 
         # print("done labeled img")
         # VAE step
