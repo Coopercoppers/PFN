@@ -220,6 +220,15 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             r_u_s = torch.sigmoid(r_u).detach()   
         
         print(labeled_imgs.shape)
+        pad_dimensions = []
+        for original_size, desired_size in zip(labeled_imgs.size(), desired_size):
+            pad_size = max(0, desired_size - original_size)
+        pad_dimensions.append((0, pad_size))  # Pad with zeros at the end
+        # Pad the tensor
+        labeled_imgs= torch.nn.functional.pad(labeled_imgs, pad_dimensions)
+        print(labeled_imgs.shape)
+
+
         labeled_imgs = labeled_imgs.reshape(labeled_imgs.shape[0],3,102,128)
         # print("done labeled img")
         print(unlabeled_imgs.shape)
