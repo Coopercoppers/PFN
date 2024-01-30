@@ -239,11 +239,14 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         # Pad the tensor
         pad_dimensions = tuple(pad_dimensions)
         unlabeled_imgs= torch.nn.functional.pad(unlabeled_imgs, pad_dimensions)
-        # print(unlabeled_imgs.shape)
+
+
         labeled_imgs = labeled_imgs.reshape([labeled_imgs.shape[0], 3, 128, 200])
         unlabeled_imgs = unlabeled_imgs.reshape([unlabeled_imgs.shape[0], 3, 128, 200])
-
-        # print("done labeled img")
+        labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
+        unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
+        print(unlabeled_imgs.shape)
+        
         # VAE step
         for count in range(num_vae_steps): # num_vae_steps
             recon, _, mu, logvar = vae(r_l_s,labeled_imgs)
