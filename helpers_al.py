@@ -224,7 +224,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         pad_dimensions = []
         for original_size, desired_size in zip(labeled_imgs.size(), desired_size):
             pad_size = max(0, desired_size - original_size)
-            pad_dimensions.append((0, pad_size))  # Pad with zeros at the end
+            pad_dimensions.append(0)  # Pad with zeros at the end
+            pad_dimensions.append(pad_size)
         # Pad the tensor
         pad_dimensions = tuple(pad_dimensions)
         labeled_imgs= torch.nn.functional.pad(labeled_imgs, pad_dimensions)
