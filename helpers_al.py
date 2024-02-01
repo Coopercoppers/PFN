@@ -312,12 +312,12 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                 unlabeled_imgs = unlabeled_imgs.to(device)
                 # labels = labels.to(device)                
                 
-            if iter_count % 50 == 0:
-                # print("Iteration: " + str(iter_count) + "  vae_loss: " + str(total_vae_loss.item()) + " dsc_loss: " +str(dsc_loss.item()))
-                args['writer-train'].add_scalar(str(cycle) + ' Total VAE Loss ',
-                        total_vae_loss.item(), iter_count)
-                args['writer-train'].add_scalar(str(cycle) + ' Total DSC Loss ',
-                        dsc_loss.item(), iter_count)
+            # if iter_count % 50 == 0:
+            #     # print("Iteration: " + str(iter_count) + "  vae_loss: " + str(total_vae_loss.item()) + " dsc_loss: " +str(dsc_loss.item()))
+            #     args['writer-train'].add_scalar(str(cycle) + ' Total VAE Loss ',
+            #             total_vae_loss.item(), iter_count)
+            #     args['writer-train'].add_scalar(str(cycle) + ' Total DSC Loss ',
+            #             dsc_loss.item(), iter_count)
 
 def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn):
     
