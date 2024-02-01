@@ -73,17 +73,17 @@ class VAE(nn.Module):
         self.z_dim = z_dim
         self.nc = nc
         self.f_filt = f_filt
-        self.encoder = nn.Sequential(
-            nn.Conv2d(nc, 128, 4, 2, 1, bias=False),              # B,  128, 32, 32
+        self.encoder = nn.Sequential(                                                   #   B 3 96 96
+            nn.Conv2d(nc, 128, 4, 2, 1, bias=False),              # B,  128, 32, 32     B 128 48 48
             nn.BatchNorm2d(128),
             nn.ReLU(True),
-            nn.Conv2d(128, 256, 4, 2, 1, bias=False),             # B,  256, 16, 16
+            nn.Conv2d(128, 256, 4, 2, 1, bias=False),             # B,  256, 16, 16      B 256 24 24
             nn.BatchNorm2d(256),
             nn.ReLU(True),
-            nn.Conv2d(256, 512, 4, 2, 1, bias=False),             # B,  512,  8,  8
+            nn.Conv2d(256, 512, 4, 2, 1, bias=False),             # B,  512,  8,  8        B 512 12 12 
             nn.BatchNorm2d(512),
             nn.ReLU(True),
-            nn.Conv2d(512, 1024, self.f_filt, 2, 1, bias=False),            # B, 1024,  4,  4
+            nn.Conv2d(512, 1024, self.f_filt, 2, 1, bias=False),            # B, 1024,  4,  4  B 1024 6 6
             nn.BatchNorm2d(1024),
             nn.ReLU(True),
             View((-1, 1024*6*6)),     #1024*14*12                            # B, 1024*4*4
@@ -243,8 +243,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
 
         labeled_imgs = labeled_imgs.reshape([labeled_imgs.shape[0], 3, 128, 200])
         unlabeled_imgs = unlabeled_imgs.reshape([unlabeled_imgs.shape[0], 3, 128, 200])
-        labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
-        unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
+        labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(96, 96), mode='bilinear', align_corners=False)
+        unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(96, 96), mode='bilinear', align_corners=False)
         print(unlabeled_imgs.shape)
         
         # VAE step
