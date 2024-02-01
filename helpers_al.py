@@ -172,7 +172,10 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
     for iter_count in range(train_iterations):
         data_sub_label = next(labeled_data)
         labeled_imgs = data_sub_label[0]
-        unlabeled_imgs = next(unlabeled_data)[0]
+        data_sub_unlabel = next(unlabeled_data)
+        unlabeled_imgs = data_sub_unlabel[0]
+        label_mask = data_sub_label[-1]
+        unlabel_mask = data_sub_unlabel[-1]
 
         if args.embed_mode == 'albert':
             tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
@@ -206,8 +209,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             r_u_0 = torch.from_numpy(np.random.uniform(0, 1, size=(unlabeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
         else:
             with torch.no_grad():
-                _,_,features_l = task_model(labeled_imgs)
-                _,_,feature_u = task_model(unlabeled_imgs)
+                _,_,features_l = task_model(labeled_imgs,label_mask)
+                _,_,feature_u = task_model(unlabeled_imgs,unlabel_mask)
                 r_l = ranker(features_l)
                 r_u = ranker(feature_u)
         if iter_count == 0:
