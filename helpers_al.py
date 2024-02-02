@@ -352,8 +352,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         all_preds, all_indices = [], []
 
         for data in unlabeled_loader:                       
-            images = data[0].to(device)
-            mask = data[-1].to(device)
+            images = data[0]
+            mask = data[-1]
             with torch.no_grad():
                 _,_,features = task_model(images,mask)
                 r = ranker(features)
@@ -371,8 +371,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
         
-        torch.save(vae, 'saved_history/models/vae-' + args['group'] +'cycle-'+str(cycle)+'.pth')
-        torch.save(discriminator, 'saved_history/models/discriminator-' + args['group'] +'cycle-'+str(cycle)+'.pth')
+        # torch.save(vae, 'saved_history/models/vae-' + args['group'] +'cycle-'+str(cycle)+'.pth')
+        # torch.save(discriminator, 'saved_history/models/discriminator-' + args['group'] +'cycle-'+str(cycle)+'.pth')
         
     return arg
 

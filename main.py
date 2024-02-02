@@ -345,6 +345,7 @@ if __name__ == '__main__':
         entity_best = None
         method = 'TA-VAAL'
         for cycle in range(7):
+            print(cycle)
             random.shuffle(unlabeled_set)
             subset = unlabeled_set[:50]
 
