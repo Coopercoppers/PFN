@@ -245,8 +245,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         pad_dimensions = tuple(pad_dimensions)
         unlabeled_imgs= torch.nn.functional.pad(unlabeled_imgs, pad_dimensions)
 
-        labeled_imgs = labeled_imgs[:,:100,:]
-        unlabeled_imgs = unlabeled_imgs[:,:100,:]
+        # labeled_imgs = labeled_imgs[:,:100,:]
+        # unlabeled_imgs = unlabeled_imgs[:,:100,:]
         labeled_imgs = labeled_imgs.reshape([labeled_imgs.shape[0], 3, 128, 200])
         unlabeled_imgs = unlabeled_imgs.reshape([unlabeled_imgs.shape[0], 3, 128, 200])
         labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(96, 96), mode='bilinear', align_corners=False)
@@ -351,17 +351,18 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         ranker = models['module']        
         all_preds, all_indices = [], []
 
-        for images, _, indices in unlabeled_loader:                       
-            images = images.to(device)
+        for data in unlabeled_loader:                       
+            images = data[0].to(device)
+            mask = data[-1].to(device)
             with torch.no_grad():
-                _,_,features = task_model(images)
+                _,_,features = task_model(images,mask)
                 r = ranker(features)
                 _, _, mu, _ = vae(torch.sigmoid(r),images)
                 preds = discriminator(r,mu)
 
             preds = preds.cpu().data
             all_preds.extend(preds)
-            all_indices.extend(indices)
+            # all_indices.extend(indices)
 
         all_preds = torch.stack(all_preds)
         all_preds = all_preds.view(-1)
