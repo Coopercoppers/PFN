@@ -311,7 +311,7 @@ class PFN(nn.Module):
         # print("after bert")
         # print(x.shape)
         temp_tensor = x
-        desired_size = (x.shape[0], 150, 768)
+        desired_size = (x.shape[0], 100, 768)
         pad_dimensions = []
         for original_size, desire_size in zip(temp_tensor.size(), desired_size):
             pad_size = max(0, desire_size - original_size)
