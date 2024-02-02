@@ -31,7 +31,7 @@ class ReshapeCNN(nn.Module):
         self.unsqueezer = Unsqueezer()
 
     def forward(self, x):
-        x = x[:][:][:100][:]
+        x = x[:,:100,:]
         x = self.unsqueezer(x)
         # Apply convolution to downsample spatial dimensions
         x = self.conv1(x)
