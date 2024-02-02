@@ -320,7 +320,7 @@ class PFN(nn.Module):
         # Pad the tensor
         pad_dimensions = tuple(pad_dimensions)
         temp_tensor = torch.nn.functional.pad(temp_tensor, pad_dimensions)
-
+        print(temp_tensor.shape)
         out1 = self.reshaper(temp_tensor)
         out2 = self.conv11(out1)
         out3 = self.conv22(out2)
