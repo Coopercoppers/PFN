@@ -26,7 +26,7 @@ class ReshapeCNN(nn.Module):
         self.deconv = nn.ConvTranspose2d(64, 64, kernel_size=3, stride=2, padding=1, output_padding=1)  # Transposed convolution to upsample spatial dimensions
         
         self.linear_layer1 = torch.nn.Linear(768, 96)
-        self.linearlayer2 = torch.nn.Linear(150,96)
+        self.linearlayer2 = torch.nn.Linear(100,96)
         self.transposer = Transposer()
         self.unsqueezer = Unsqueezer()
 
