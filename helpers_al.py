@@ -169,7 +169,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
     train_iterations = 1250 # int( (args['INCREMENTAL']*cycle+ args['SUBSET']) * args['EPOCHV'] / args['BATCH'] )
     print('Num of Iteration:', str(train_iterations))
     
-    for iter_count in range(train_iterations):
+    for iter_count in range(2): #train_iterations
         data_sub_label = next(labeled_data)
         labeled_imgs = data_sub_label[0]
         lab_img_dup = labeled_imgs
