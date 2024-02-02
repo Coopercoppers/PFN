@@ -308,8 +308,8 @@ class PFN(nn.Module):
         # print("after tokenizing")
         # print(x.shape)
         x = self.bert(**x)[0]
-        print("after bert")
-        print(x.shape)
+        # print("after bert")
+        # print(x.shape)
         temp_tensor = x
         desired_size = (20, 100, 768)
         pad_dimensions = []
