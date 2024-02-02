@@ -326,7 +326,15 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             #             dsc_loss.item(), iter_count)
 
 def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn):
-    
+    if args.embed_mode == 'albert':
+        tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
+        bert = AlbertModel.from_pretrained("albert-xxlarge-v1")
+    elif args.embed_mode == 'bert_cased':
+        tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+        bert = AutoModel.from_pretrained("bert-base-cased")
+    elif args.embed_mode == 'scibert':
+        tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased")
+        bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
     if method == 'TA-VAAL':
         # Create unlabeled dataloader for the unlabeled subset
@@ -356,6 +364,23 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
             mask = data[-1]
             with torch.no_grad():
                 _,_,features = task_model(images,mask)
+                images = tokenizer(images, return_tensors="pt",
+                                  padding='longest',
+                                  is_split_into_words=True).to(device)
+                images = bert(**images)[0]
+                desired_size = (images.shape[0], 100, 768)
+                pad_dimensions = []
+                for original_size, desired_size in zip(images.size(), desired_size):
+                    pad_size = max(0, desired_size - original_size)
+                    pad_dimensions.append(0)  # Pad with zeros at the end
+                    pad_dimensions.append(pad_size)
+        # Pad the tensor
+                pad_dimensions = tuple(pad_dimensions)
+                images= torch.nn.functional.pad(images, pad_dimensions)
+                images = images[:,:100,:]
+                images = images.reshape([images.shape[0], 3, 128, 200])
+                images = torch.nn.functional.interpolate(images, size=(96, 96), mode='bilinear', align_corners=False)
+
                 r = ranker(features)
                 _, _, mu, _ = vae(torch.sigmoid(r),images)
                 preds = discriminator(r,mu)
