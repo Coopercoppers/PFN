@@ -6,6 +6,7 @@ import torch.nn.init as init
 import torch.optim as optim
 from torch.utils.data import Dataset,DataLoader
 from transformers import AutoTokenizer, AutoModel, AlbertTokenizer, AlbertModel
+from torch.utils.tensorboard import SummaryWriter
 
 class SubsetSequentialSampler(torch.utils.data.Sampler):
     r"""Samples elements sequentially from a given list of indices, without replacement.
@@ -203,9 +204,6 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         unlabeled_imgs = unlabeled_imgs.to(device)
         # labels = labels.to(device)
         
-        # labeled_imgs = labeled_imgs.transpose(0,1)
-        # print("in train_vaal")    
-        # print(labeled_imgs.shape)
         if iter_count == 0 :
             r_l_0 = torch.from_numpy(np.random.uniform(0, 1, size=(labeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
             r_u_0 = torch.from_numpy(np.random.uniform(0, 1, size=(unlabeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
@@ -318,12 +316,12 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                 unlabeled_imgs = unlabeled_imgs.to(device)
                 # labels = labels.to(device)                
                 
-            # if iter_count % 50 == 0:
-            #     # print("Iteration: " + str(iter_count) + "  vae_loss: " + str(total_vae_loss.item()) + " dsc_loss: " +str(dsc_loss.item()))
-            #     args['writer-train'].add_scalar(str(cycle) + ' Total VAE Loss ',
-            #             total_vae_loss.item(), iter_count)
-            #     args['writer-train'].add_scalar(str(cycle) + ' Total DSC Loss ',
-            #             dsc_loss.item(), iter_count)
+            if iter_count % 50 == 0:
+                # print("Iteration: " + str(iter_count) + "  vae_loss: " + str(total_vae_loss.item()) + " dsc_loss: " +str(dsc_loss.item()))
+                SummaryWriter('logs/SCIERC_Train').add_scalar(str(cycle) + ' Total VAE Loss ',
+                        total_vae_loss.item(), iter_count)
+                SummaryWriter('logs/SCIERC_Train').add_scalar(str(cycle) + ' Total DSC Loss ',
+                        dsc_loss.item(), iter_count)
 
 def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn):
     if args.embed_mode == 'albert':
@@ -396,8 +394,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
         
-        # torch.save(vae, 'saved_history/models/vae-' + args['group'] +'cycle-'+str(cycle)+'.pth')
-        # torch.save(discriminator, 'saved_history/models/discriminator-' + args['group'] +'cycle-'+str(cycle)+'.pth')
+        torch.save(vae, 'saved_history/models/vae-' + 'head' +'cycle-'+str(cycle)+'.pth')
+        torch.save(discriminator, 'saved_history/models/discriminator-' + 'head' +'cycle-'+str(cycle)+'.pth')
         
     return arg
 
