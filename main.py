@@ -362,7 +362,7 @@ if __name__ == '__main__':
             # np.save("saved_history/labelled-" + args['group'] + str(cycle) + ".npy", np.array(labeled_set))
             
             # Create a new dataloader for the updated labeled dataset
-            train_batch = DataLoader(train_dataset, batch_size=args['BATCH'], 
+            train_batch = DataLoader(train_dataset, batch_size=args.batch_size,
                                             sampler=SubsetRandomSampler(labeled_set), 
                                             pin_memory=True, drop_last=True)
 
