@@ -21,7 +21,7 @@ from helpers_al import VAE, query_samples, Discriminator
 
 
 def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch):
-    for epoch in range(args.epoch):#1
+    for epoch in range(1):#args.epoch
         steps, train_loss = 0, 0
 
         model.train()
