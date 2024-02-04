@@ -21,7 +21,7 @@ from helpers_al import VAE, query_samples, Discriminator
 
 
 def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch):
-    for epoch in range(1):#args.epoch
+    for epoch in range(args.epoch):#1
         steps, train_loss = 0, 0
 
         model.train()
@@ -353,9 +353,9 @@ if __name__ == '__main__':
 
             arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn)
 
-            new_list = list(torch.tensor(subset)[arg][:30].numpy())
-            labeled_set += list(torch.tensor(subset)[arg][-30:].numpy())
-            listd = list(torch.tensor(subset)[arg][:-30].numpy()) 
+            new_list = list(torch.tensor(subset)[arg][:50].numpy())
+            labeled_set += list(torch.tensor(subset)[arg][-50:].numpy())
+            listd = list(torch.tensor(subset)[arg][:-50].numpy()) 
             unlabeled_set = listd + unlabeled_set[50:]
             print(len(labeled_set), min(labeled_set), max(labeled_set))
             
