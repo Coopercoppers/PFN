@@ -327,6 +327,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                         dsc_loss.item(), iter_count)
 
 def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     if args.embed_mode == 'albert':
         tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
         bert = AlbertModel.from_pretrained("albert-xxlarge-v1")
@@ -334,9 +336,9 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
         bert = AutoModel.from_pretrained("bert-base-cased")
     elif args.embed_mode == 'scibert':
-        tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased")
-        bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased")
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+        tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased").to(device)
+        bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased").to(device)
+     
     if method == 'TA-VAAL':
         # Create unlabeled dataloader for the unlabeled subset
         unlabeled_loader = DataLoader(data_unlabeled, batch_size=args.batch_size, 
@@ -364,7 +366,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
             images = data[0]
             mask = data[-1]
             mask = mask.to(device)
-            
+
             with torch.no_grad():
                 _,_,features = task_model(images,mask)
                 images = tokenizer(images, return_tensors="pt",
