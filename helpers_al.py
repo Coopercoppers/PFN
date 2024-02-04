@@ -193,6 +193,9 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         labeled_imgs = tokenizer(labeled_imgs, return_tensors="pt",
                                   padding='longest',
                                   is_split_into_words=True).to(device)
+        labeled_imgs = labeled_imgs.to(device)
+        unlabeled_imgs = unlabeled_imgs.to(device)
+        
         labeled_imgs = bert(**labeled_imgs)[0]
         unlabeled_imgs = tokenizer(unlabeled_imgs, return_tensors="pt",
                                   padding='longest',
