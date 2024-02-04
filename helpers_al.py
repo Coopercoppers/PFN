@@ -387,6 +387,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
                 images = torch.nn.functional.interpolate(images, size=(96, 96), mode='bilinear', align_corners=False)
 
                 r = ranker(features)
+                images = images.to(device)
+                r = r.to(device)
                 _, _, mu, _ = vae(torch.sigmoid(r),images)
                 preds = discriminator(r,mu)
 
