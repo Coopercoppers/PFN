@@ -328,7 +328,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
 
 def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+    
     if args.embed_mode == 'albert':
         tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
         bert = AlbertModel.from_pretrained("albert-xxlarge-v1")
@@ -336,8 +336,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
         bert = AutoModel.from_pretrained("bert-base-cased")
     elif args.embed_mode == 'scibert':
-        tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased").to(device)
-        bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased").to(device)
+        tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased")
+        bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased")
      
     if method == 'TA-VAAL':
         # Create unlabeled dataloader for the unlabeled subset
@@ -371,7 +371,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
                 _,_,features = task_model(images,mask)
                 images = tokenizer(images, return_tensors="pt",
                                   padding='longest',
-                                  is_split_into_words=True).to(device)
+                                  is_split_into_words=True)#.to(device)
                 images = bert(**images)[0]
                 desired_size = (images.shape[0], 100, 768)
                 pad_dimensions = []
