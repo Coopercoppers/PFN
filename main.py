@@ -359,8 +359,8 @@ if __name__ == '__main__':
             unlabeled_set = listd + unlabeled_set[50:]
             print(len(labeled_set), min(labeled_set), max(labeled_set))
             
-            np.save("saved_history/labelled-" + 'head' + str(cycle) + ".npy", np.array(labeled_set))
-            
+            np.save("labelled-" + 'head' + str(cycle) + ".npy", np.array(labeled_set))
+            #saved_history/
             # Create a new dataloader for the updated labeled dataset
             train_batch = DataLoader(dataset=train_dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(labeled_set), 
                                         pin_memory=True, collate_fn=collate_fn)

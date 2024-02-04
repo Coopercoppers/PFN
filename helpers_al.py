@@ -402,9 +402,9 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         all_preds *= -1
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
-        
-        torch.save(vae, 'saved_history/models/vae-' + 'head' +'cycle-'+str(cycle)+'.pth')
-        torch.save(discriminator, 'saved_history/models/discriminator-' + 'head' +'cycle-'+str(cycle)+'.pth')
+        #saved_history/models/
+        torch.save(vae, 'vae-' + 'head' +'cycle-'+str(cycle)+'.pth')
+        torch.save(discriminator, 'discriminator-' + 'head' +'cycle-'+str(cycle)+'.pth')
         
     return arg
 
