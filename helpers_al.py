@@ -206,7 +206,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         # labels = labels.to(device)
         label_mask = label_mask.to(device)
         unlabel_mask = unlabel_mask.to(device)
-        
+
         if iter_count == 0 :
             r_l_0 = torch.from_numpy(np.random.uniform(0, 1, size=(labeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
             r_u_0 = torch.from_numpy(np.random.uniform(0, 1, size=(unlabeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
@@ -363,6 +363,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         for data in unlabeled_loader:                       
             images = data[0]
             mask = data[-1]
+            mask = mask.to(device)
+            
             with torch.no_grad():
                 _,_,features = task_model(images,mask)
                 images = tokenizer(images, return_tensors="pt",
