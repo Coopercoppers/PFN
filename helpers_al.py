@@ -180,24 +180,24 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         unlabel_mask = data_sub_unlabel[-1]
         unlabeled_imgs_dup = unlabeled_imgs
 
-        # if args.embed_mode == 'albert':
-        #     tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
-        #     bert = AlbertModel.from_pretrained("albert-xxlarge-v1")
-        # elif args.embed_mode == 'bert_cased':
-        #     tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
-        #     bert = AutoModel.from_pretrained("bert-base-cased")
-        # elif args.embed_mode == 'scibert':
-        tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased")
-        bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased")
+        if args.embed_mode == 'albert':
+            tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
+            bert = AlbertModel.from_pretrained("albert-xxlarge-v1")
+        elif args.embed_mode == 'bert_cased':
+            tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+            bert = AutoModel.from_pretrained("bert-base-cased")
+        elif args.embed_mode == 'scibert':
+            tokenizer = AutoTokenizer.from_pretrained("allenai/scibert_scivocab_uncased")
+            bert = AutoModel.from_pretrained("allenai/scibert_scivocab_uncased")
 
         labeled_imgs = tokenizer(labeled_imgs, return_tensors="pt",
                                   padding='longest',
-                                  is_split_into_words=True).to(device=torch.device("cuda:0"))
+                                  is_split_into_words=True).to(device)
 
         labeled_imgs = bert(**labeled_imgs)[0]
         unlabeled_imgs = tokenizer(unlabeled_imgs, return_tensors="pt",
                                   padding='longest',
-                                  is_split_into_words=True).to(device=torch.device("cuda:0"))
+                                  is_split_into_words=True).to(device)
         unlabeled_imgs = bert(**unlabeled_imgs)[0]
 
 
