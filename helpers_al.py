@@ -247,9 +247,9 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         unlabeled_imgs = unlabeled_imgs[:,:100,:]
         labeled_imgs = labeled_imgs.reshape([labeled_imgs.shape[0], 3, 128, 200])
         unlabeled_imgs = unlabeled_imgs.reshape([unlabeled_imgs.shape[0], 3, 128, 200])
-        labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(32, 32), mode='bilinear', align_corners=False)
-        unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(32, 32), mode='bilinear', align_corners=False)
-        # print(unlabeled_imgs.shape)
+        labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
+        unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
+        print(unlabeled_imgs.shape)
         
         # VAE step
         for count in range(num_vae_steps): # num_vae_steps
