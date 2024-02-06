@@ -211,8 +211,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             with torch.no_grad():
                 _,_,features_l = task_model(lab_img_dup,label_mask)
                 _,_,feature_u = task_model(unlabeled_imgs_dup,unlabel_mask)
-                r_l = ranker(features_l)
-                r_u = ranker(feature_u)
+                # r_l = ranker(features_l)
+                # r_u = ranker(feature_u)
         if iter_count == 0:
             r_l = r_l_0.detach()
             r_u = r_u_0.detach()
@@ -247,8 +247,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         unlabeled_imgs = unlabeled_imgs[:,:100,:]
         labeled_imgs = labeled_imgs.reshape([labeled_imgs.shape[0], 3, 128, 200])
         unlabeled_imgs = unlabeled_imgs.reshape([unlabeled_imgs.shape[0], 3, 128, 200])
-        labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(96, 96), mode='bilinear', align_corners=False)
-        unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(96, 96), mode='bilinear', align_corners=False)
+        labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
+        unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(64, 64), mode='bilinear', align_corners=False)
         # print(unlabeled_imgs.shape)
         
         # VAE step
@@ -381,11 +381,11 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
                 images= torch.nn.functional.pad(images, pad_dimensions)
                 images = images[:,:100,:]
                 images = images.reshape([images.shape[0], 3, 128, 200])
-                images = torch.nn.functional.interpolate(images, size=(96, 96), mode='bilinear', align_corners=False)
+                images = torch.nn.functional.interpolate(images, size=(64, 64), mode='bilinear', align_corners=False)
 
-                r = ranker(features)
+                # r = ranker(features)
                 images = images.to(device)
-                r = r.to(device)
+                # r = r.to(device)
                 _, _, mu, _ = vae(images)
                 preds = discriminator(mu)
 
