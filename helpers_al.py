@@ -30,7 +30,7 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
         self.z_dim = z_dim
         self.net = nn.Sequential(
-            nn.Linear(z_dim + 1, 512),
+            nn.Linear(z_dim, 512),
             nn.ReLU(True),
             nn.Linear(512, 512),
             nn.ReLU(True),
@@ -44,8 +44,7 @@ class Discriminator(nn.Module):
             for m in self._modules[block]:
                 kaiming_init(m)
 
-    def forward(self, r,z):  
-        z = torch.cat([z, r], 1)
+    def forward(self, z):
         return self.net(z)
     
 class View(nn.Module):
@@ -69,33 +68,32 @@ def kaiming_init(m):
 
 class VAE(nn.Module):
     """Encoder-Decoder architecture for both WAE-MMD and WAE-GAN."""
-    def __init__(self, z_dim=32, nc=3, f_filt=4):
+    def __init__(self, z_dim=32, nc=3):
         super(VAE, self).__init__()
         self.z_dim = z_dim
         self.nc = nc
-        self.f_filt = f_filt
-        self.encoder = nn.Sequential(                                                   #   B 3 96 96
-            nn.Conv2d(nc, 128, 4, 2, 1, bias=False),              # B,  128, 32, 32     B 128 48 48
+        self.encoder = nn.Sequential(
+            nn.Conv2d(nc, 128, 4, 2, 1, bias=False),              # B,  128, 32, 32
             nn.BatchNorm2d(128),
             nn.ReLU(True),
-            nn.Conv2d(128, 256, 4, 2, 1, bias=False),             # B,  256, 16, 16      B 256 24 24
+            nn.Conv2d(128, 256, 4, 2, 1, bias=False),             # B,  256, 16, 16
             nn.BatchNorm2d(256),
             nn.ReLU(True),
-            nn.Conv2d(256, 512, 4, 2, 1, bias=False),             # B,  512,  8,  8        B 512 12 12 
+            nn.Conv2d(256, 512, 4, 2, 1, bias=False),             # B,  512,  8,  8
             nn.BatchNorm2d(512),
             nn.ReLU(True),
-            nn.Conv2d(512, 1024, self.f_filt, 2, 1, bias=False),            # B, 1024,  4,  4  B 1024 6 6
+            nn.Conv2d(512, 1024, 4, 2, 1, bias=False),            # B, 1024,  4,  4
             nn.BatchNorm2d(1024),
             nn.ReLU(True),
-            View((-1, 1024*6*6)),     #1024*14*12                            # B, 1024*4*4
+            View((-1, 1024*2*2)),                                 # B, 1024*4*4
         )
 
-        self.fc_mu = nn.Linear(1024*6*6, z_dim)                            # B, z_dim
-        self.fc_logvar = nn.Linear(1024*6*6, z_dim)                            # B, z_dim
+        self.fc_mu = nn.Linear(1024*2*2, z_dim)                            # B, z_dim
+        self.fc_logvar = nn.Linear(1024*2*2, z_dim)                            # B, z_dim
         self.decoder = nn.Sequential(
-            nn.Linear(z_dim + 1, 1024*6*6),                           # B, 1024*8*8
-            View((-1, 1024, 6, 6)),                               # B, 1024,  8,  8
-            nn.ConvTranspose2d(1024, 512, self.f_filt, 2, 1, bias=False),   # B,  512, 16, 16
+            nn.Linear(z_dim, 1024*4*4),                           # B, 1024*8*8
+            View((-1, 1024, 4, 4)),                               # B, 1024,  8,  8
+            nn.ConvTranspose2d(1024, 512, 4, 2, 1, bias=False),   # B,  512, 16, 16
             nn.BatchNorm2d(512),
             nn.ReLU(True),
             nn.ConvTranspose2d(512, 256, 4, 2, 1, bias=False),    # B,  256, 32, 32
@@ -104,7 +102,7 @@ class VAE(nn.Module):
             nn.ConvTranspose2d(256, 128, 4, 2, 1, bias=False),    # B,  128, 64, 64
             nn.BatchNorm2d(128),
             nn.ReLU(True),
-            nn.ConvTranspose2d(128, nc, 2, 2),                       # B,   nc, 64, 64
+            nn.ConvTranspose2d(128, nc, 1),                       # B,   nc, 64, 64
         )
         self.weight_init()
 
@@ -116,14 +114,13 @@ class VAE(nn.Module):
             except:
                 kaiming_init(block)
 
-    def forward(self, r, x):
+    def forward(self, x):
         z = self._encode(x)
         mu, logvar = self.fc_mu(z), self.fc_logvar(z)
         z = self.reparameterize(mu, logvar)
-        z = torch.cat([z,r],1)
         x_recon = self._decode(z)
 
-        return  x_recon, z, mu, logvar
+        return x_recon, z, mu, logvar
 
     def reparameterize(self, mu, logvar):
         stds = (0.5 * logvar).exp()
@@ -256,14 +253,14 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         
         # VAE step
         for count in range(num_vae_steps): # num_vae_steps
-            recon, _, mu, logvar = vae(r_l_s,labeled_imgs)
+            recon, _, mu, logvar = vae(labeled_imgs)
             unsup_loss = vae_loss(labeled_imgs, recon, mu, logvar, beta)
-            unlab_recon, _, unlab_mu, unlab_logvar = vae(r_u_s,unlabeled_imgs)
+            unlab_recon, _, unlab_mu, unlab_logvar = vae(unlabeled_imgs)
             transductive_loss = vae_loss(unlabeled_imgs, 
                     unlab_recon, unlab_mu, unlab_logvar, beta)
         
-            labeled_preds = discriminator(r_l,mu)
-            unlabeled_preds = discriminator(r_u,unlab_mu)
+            labeled_preds = discriminator(mu)
+            unlabeled_preds = discriminator(unlab_mu)
             
             lab_real_preds = torch.ones(labeled_imgs.size(0))
             unlab_real_preds = torch.ones(unlabeled_imgs.size(0))
@@ -291,12 +288,12 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         # Discriminator step
         for count in range(num_adv_steps):
             with torch.no_grad():
-                _, _, mu, _ = vae(r_l_s,labeled_imgs)
-                _, _, unlab_mu, _ = vae(r_u_s,unlabeled_imgs)
-            
-            labeled_preds = discriminator(r_l,mu)
-            unlabeled_preds = discriminator(r_u,unlab_mu)
-            
+                _, _, mu, _ = vae(labeled_imgs)
+                _, _, unlab_mu, _ = vae(unlabeled_imgs)
+                
+            labeled_preds = discriminator(mu)
+            unlabeled_preds = discriminator(unlab_mu)
+                
             lab_real_preds = torch.ones(labeled_imgs.size(0))
             unlab_fake_preds = torch.zeros(unlabeled_imgs.size(0))
 
@@ -389,8 +386,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
                 r = ranker(features)
                 images = images.to(device)
                 r = r.to(device)
-                _, _, mu, _ = vae(torch.sigmoid(r),images)
-                preds = discriminator(r,mu)
+                _, _, mu, _ = vae(images)
+                preds = discriminator(mu)
 
             preds = preds.cpu().data
             all_preds.extend(preds)
