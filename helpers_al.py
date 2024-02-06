@@ -249,7 +249,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
         unlabeled_imgs = unlabeled_imgs.reshape([unlabeled_imgs.shape[0], 3, 128, 200])
         labeled_imgs = torch.nn.functional.interpolate(labeled_imgs, size=(32, 32), mode='bilinear', align_corners=False)
         unlabeled_imgs = torch.nn.functional.interpolate(unlabeled_imgs, size=(32, 32), mode='bilinear', align_corners=False)
-        print(unlabeled_imgs.shape)
+        # print(unlabeled_imgs.shape)
         
         # VAE step
         for count in range(num_vae_steps): # num_vae_steps
@@ -381,7 +381,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
                 images= torch.nn.functional.pad(images, pad_dimensions)
                 images = images[:,:100,:]
                 images = images.reshape([images.shape[0], 3, 128, 200])
-                images = torch.nn.functional.interpolate(images, size=(64, 64), mode='bilinear', align_corners=False)
+                images = torch.nn.functional.interpolate(images, size=(32, 32), mode='bilinear', align_corners=False)
 
                 # r = ranker(features)
                 images = images.to(device)
