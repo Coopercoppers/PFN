@@ -306,7 +306,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             latent_pred_unlab = torch.mean(latent_pred_unlab, dim=2)
 
             layer1 = layer1.to(device)
-            
+
             mu = layer1(mu)
             unlab_mu = layer1(unlab_mu)
 
@@ -419,6 +419,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         all_preds = all_preds.view(-1)
         # need to multiply by -1 to be able to use torch.topk 
         all_preds *= -1
+        
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
         #saved_history/models/
