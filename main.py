@@ -34,7 +34,7 @@ def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2
             re_label = data[2].to(device)
             mask = data[-1].to(device)
 
-            ner_pred, re_pred, features = model(text, mask)
+            ner_pred, re_pred, features,_ = model(text, mask)
             loss = BCEloss(ner_pred, ner_label, re_pred, re_label)
 
             loss.backward()
@@ -173,7 +173,7 @@ def evaluate(test_batch, rel2idx, ner2idx, args, test_or_dev, model):
             re_label = data[2].to(device)
             mask = data[-1].to(device)
 
-            ner_pred, re_pred, features = model(text, mask)
+            ner_pred, re_pred, features,_ = model(text, mask)
             loss = BCEloss(ner_pred, ner_label, re_pred, re_label)
             test_loss += loss
 

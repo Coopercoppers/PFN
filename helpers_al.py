@@ -209,8 +209,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             r_u_0 = torch.from_numpy(np.random.uniform(0, 1, size=(unlabeled_imgs.shape[0],1))).type(torch.FloatTensor).to(device)
         else:
             with torch.no_grad():
-                _,_,features_l = task_model(lab_img_dup,label_mask)
-                _,_,feature_u = task_model(unlabeled_imgs_dup,unlabel_mask)
+                _,_,features_l,_ = task_model(lab_img_dup,label_mask)
+                _,_,feature_u,_ = task_model(unlabeled_imgs_dup,unlabel_mask)
                 # r_l = ranker(features_l)
                 # r_u = ranker(feature_u)
         if iter_count == 0:
@@ -290,8 +290,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             with torch.no_grad():
                 _, _, mu, _ = vae(labeled_imgs)
                 _, _, unlab_mu, _ = vae(unlabeled_imgs)
-            print("mushapes")
-            print(mu.shape)    
+                
             labeled_preds = discriminator(mu)
             unlabeled_preds = discriminator(unlab_mu)
                 
@@ -366,7 +365,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
             mask = mask.to(device)
 
             with torch.no_grad():
-                _,_,features = task_model(images,mask)
+                _,_,features,_ = task_model(images,mask)
                 images = tokenizer(images, return_tensors="pt",
                                   padding='longest',
                                   is_split_into_words=True)#.to(device)
