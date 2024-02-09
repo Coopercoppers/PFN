@@ -136,7 +136,7 @@ class VAE(nn.Module):
     def _decode(self, z):
         return self.decoder(z)
     
-def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cycle, args):
+def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cycle, args,layer1):
     
     vae = models['vae']
     discriminator = models['discriminator']
@@ -290,7 +290,27 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             with torch.no_grad():
                 _, _, mu, _ = vae(labeled_imgs)
                 _, _, unlab_mu, _ = vae(unlabeled_imgs)
-                
+                _,_,_,latent_pred_lab = task_model(lab_img_dup,label_mask)
+                _,_,_,latent_pred_unlab = task_model(unlabeled_imgs_dup,unlabel_mask)
+
+            latent_pred_lab = latent_pred_lab.reshape([latent_pred_lab.shape[0],512*12*12])
+            latent_pred_unlab = latent_pred_unlab.reshape([latent_pred_unlab.shape[0],512*12*12])
+
+            latent_pred_lab = latent_pred_lab.view(latent_pred_lab.shape[0], 16, 16, 288)
+            latent_pred_unlab = latent_pred_unlab.view([latent_pred_unlab.shape[0],16,16,288])
+
+            latent_pred_lab = torch.mean(latent_pred_lab, dim=3)
+            latent_pred_lab = torch.mean(latent_pred_lab, dim=2)
+
+            latent_pred_unlab = torch.mean(latent_pred_unlab, dim=3)
+            latent_pred_unlab = torch.mean(latent_pred_unlab, dim=2)
+
+            mu = layer1(mu)
+            unlab_mu = layer1(unlab_mu)
+
+            mu = torch.cat((mu,latent_pred_lab),dim=1)
+            unlab_mu = torch.cat((unlab_mu, latent_pred_unlab),dim=1)
+
             labeled_preds = discriminator(mu)
             unlabeled_preds = discriminator(unlab_mu)
                 
@@ -323,7 +343,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                 SummaryWriter('logs/SCIERC_Train').add_scalar(str(cycle) + ' Total DSC Loss ',
                         dsc_loss.item(), iter_count)
 
-def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn):
+def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn,layer1):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     if args.embed_mode == 'albert':
@@ -354,7 +374,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         optim_discriminator = optim.Adam(discriminator.parameters(), lr=5e-4)
         optimizers = {'vae': optim_vae, 'discriminator':optim_discriminator}
 
-        train_vaal(models,optimizers, labeled_loader, unlabeled_loader, cycle+1, args)
+        train_vaal(models,optimizers, labeled_loader, unlabeled_loader, cycle+1, args,layer1)
         task_model = models['backbone']
         ranker = models['module']        
         all_preds, all_indices = [], []
