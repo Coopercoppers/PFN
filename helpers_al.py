@@ -290,7 +290,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             with torch.no_grad():
                 _, _, mu, _ = vae(labeled_imgs)
                 _, _, unlab_mu, _ = vae(unlabeled_imgs)
-                
+            print(mu.shape)    
             labeled_preds = discriminator(mu)
             unlabeled_preds = discriminator(unlab_mu)
                 
