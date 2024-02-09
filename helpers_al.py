@@ -305,6 +305,8 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
             latent_pred_unlab = torch.mean(latent_pred_unlab, dim=3)
             latent_pred_unlab = torch.mean(latent_pred_unlab, dim=2)
 
+            layer1 = layer1.to(device)
+            
             mu = layer1(mu)
             unlab_mu = layer1(unlab_mu)
 
