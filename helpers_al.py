@@ -343,6 +343,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                         total_vae_loss.item(), iter_count)
                 SummaryWriter('logs/SCIERC_Train').add_scalar(str(cycle) + ' Total DSC Loss ',
                         dsc_loss.item(), iter_count)
+    return vae,discriminator
 
 def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn,weights):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -375,7 +376,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         optim_discriminator = optim.Adam(discriminator.parameters(), lr=5e-4)
         optimizers = {'vae': optim_vae, 'discriminator':optim_discriminator}
 
-        train_vaal(models,optimizers, labeled_loader, unlabeled_loader, cycle+1, args)
+        model['vae'], model['discriminator']=train_vaal(models,optimizers, labeled_loader, unlabeled_loader, cycle+1, args)
         task_model = models['backbone']
         ranker = models['module']        
         all_preds, all_indices,weights_list = [], [], []
@@ -455,7 +456,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         torch.save(vae, 'vae-' + 'head' +'cycle-'+str(cycle)+'.pth')
         torch.save(discriminator, 'discriminator-' + 'head' +'cycle-'+str(cycle)+'.pth')
         
-    return arg
+    return arg,model['vae'], model['discriminator']
 
 def read_data(dataloader, labels=True):
     if labels:

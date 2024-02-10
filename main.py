@@ -71,6 +71,7 @@ def train(args, model, train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2
     saved_file.save("best test result ner-p: {:.4f} \t ner-r: {:.4f} \t ner-f: {:.4f} \t re-p: {:.4f} \t re-r: {:.4f} \t re-f: {:.4f} ".format(entity_best["p"],
                     entity_best["r"], entity_best["f"], triple_best["p"], triple_best["r"], triple_best["f"]))
 
+    return model
 
 
 def kaiming_init(m):
@@ -353,10 +354,10 @@ if __name__ == '__main__':
             random.shuffle(unlabeled_set)
             subset = unlabeled_set[:50]
 
-            train(args, models['backbone'], train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch)
+            models['backbone'] = train(args, models['backbone'], train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch)
             torch.save(models['backbone'], 'predictor-backbone-' + 'cycle-'+str(cycle+1)+'.pth')
             torch.save(models['module'], 'predictor-module-'+'cycle-'+str(cycle+1)+'.pth')
-            arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn,weights)
+            arg,models['vae'], models['discriminator'] = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn,weights)
 
             new_list = list(torch.tensor(subset)[arg][:30].numpy())
             labeled_set += list(torch.tensor(subset)[arg][-30:].numpy())
