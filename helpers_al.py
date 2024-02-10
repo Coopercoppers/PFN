@@ -395,8 +395,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
                 re_score = re_score.transpose(1,2)
                 re_score = re_score.transpose(0,1)
 
-                ner_score = torch.sum(ner_score, dim=(1, 2, 3), keepdim=True)
-                re_score = torch.sum(re_score, dim=(1, 2, 3), keepdim=True)
+                ner_score = torch.mean(ner_score, dim=(1, 2, 3), keepdim=True)
+                re_score = torch.mean(re_score, dim=(1, 2, 3), keepdim=True)
 
                 ner_score = torch.squeeze(ner_score)
                 re_score = torch.squeeze(re_score)
