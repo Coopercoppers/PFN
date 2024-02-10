@@ -345,7 +345,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
                 SummaryWriter('logs/SCIERC_Train').add_scalar(str(cycle) + ' Total DSC Loss ',
                         dsc_loss.item(), iter_count)
 
-def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn,layer1):
+def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, args, collate_fn,layer1,weights):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     if args.embed_mode == 'albert':
@@ -377,6 +377,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         optimizers = {'vae': optim_vae, 'discriminator':optim_discriminator}
 
         train_vaal(models,optimizers, labeled_loader, unlabeled_loader, cycle+1, args,layer1)
+        layer1 = layer1.to(device)
         task_model = models['backbone']
         ranker = models['module']        
         all_preds, all_indices = [], []
@@ -387,7 +388,18 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
             mask = mask.to(device)
 
             with torch.no_grad():
-                _,_,features,_ = task_model(images,mask)
+                ner_score,re_score,features,latents = task_model(images,mask)
+                ner_score = ner_score.transpose(1,2)
+                ner_score = ner_score.transpose(0,1)
+                re_score = re_score.transpose(1,2)
+                re_score = re_score.transpose(0,1)
+
+                ner_score = torch.sum(ner_score, dim=(1, 2, 3), keepdim=True)
+                re_score = torch.sum(re_score, dim=(1, 2, 3), keepdim=True)
+
+                ner_score = ner_score.squeeze(ner_score)
+                re_score = re_score.squeeze(re_score)
+
                 images = tokenizer(images, return_tensors="pt",
                                   padding='longest',
                                   is_split_into_words=True)#.to(device)
@@ -407,19 +419,31 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
 
                 # r = ranker(features)
                 images = images.to(device)
+                latents = latents.reshape([latents.shape[0],512*12*12])
+
+                latents = latents.view(latents.shape[0], 16, 16, 288)
+
+                latents = torch.mean(latents, dim=3)
+                latents = torch.mean(latents, dim=2)
+
                 # r = r.to(device)
                 _, _, mu, _ = vae(images)
+                mu = layer1(mu)
+                mu = torch.cat((mu,latents),dim=1)
                 preds = discriminator(mu)
 
             preds = preds.cpu().data
             all_preds.extend(preds)
             # all_indices.extend(indices)
 
+        weighted_preds = ner_score*weights[0] + re_score*weights[1]
+
         all_preds = torch.stack(all_preds)
         all_preds = all_preds.view(-1)
         # need to multiply by -1 to be able to use torch.topk 
         all_preds *= -1
         
+        all_preds = all_preds*weighted_preds
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
         #saved_history/models/

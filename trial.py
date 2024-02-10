@@ -47,7 +47,5 @@ class ReshapeCNN(nn.Module):
 
 tensor = torch.randn((16, 100, 768))
 
-
-model = ReshapeCNN()
-output_tensor = model(tensor)
-print(output_tensor.shape)
+tensor = tensor.transpose(0,2)
+print(tensor.shape)

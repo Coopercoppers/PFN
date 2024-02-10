@@ -316,6 +316,9 @@ if __name__ == '__main__':
     models      = {'backbone': model, 'module': loss_module, 'vae': vae, 'discriminator': discriminator}
     
     layer1 = nn.Linear(32,16)
+    weight1 = nn.Parameter(torch.ones(1))
+    weight2 = nn.Parameter(torch.ones(1))
+    weights = [weight1, weight2]
     vae = models['vae']
     # discriminator = models['discriminator']
     # task_model = models['backbone']
@@ -352,7 +355,7 @@ if __name__ == '__main__':
             train(args, models['backbone'], train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch)
             torch.save(models['backbone'], 'predictor-backbone-' + 'cycle-'+str(cycle+1)+'.pth')
             torch.save(models['module'], 'predictor-module-'+'cycle-'+str(cycle+1)+'.pth')
-            arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn,layer1)
+            arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn,layer1,weights)
 
             new_list = list(torch.tensor(subset)[arg][:30].numpy())
             labeled_set += list(torch.tensor(subset)[arg][-30:].numpy())
