@@ -446,7 +446,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         # need to multiply by -1 to be able to use torch.topk 
         all_preds *= -1
         
-        all_preds = all_preds*weighted_preds
+        all_preds = all_preds*weights_list
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
         #saved_history/models/
