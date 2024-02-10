@@ -318,6 +318,8 @@ if __name__ == '__main__':
     layer1 = nn.Linear(32,16)
     weight1 = nn.Parameter(torch.ones(1))
     weight2 = nn.Parameter(torch.ones(1))
+    weight1 = weight1.to(device)
+    weight2 = weight2.to(device)
     weights = [weight1, weight2]
     vae = models['vae']
     # discriminator = models['discriminator']
