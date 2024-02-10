@@ -380,7 +380,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         layer1 = layer1.to(device)
         task_model = models['backbone']
         ranker = models['module']        
-        all_preds, all_indices = [], []
+        all_preds, all_indices,weights_list = [], [], []
 
         for data in unlabeled_loader:                       
             images = data[0]
@@ -434,9 +434,12 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
 
             preds = preds.cpu().data
             all_preds.extend(preds)
+            weighted_preds = ner_score*weights[0] + re_score*weights[1]
+            weighted_preds = weighted_preds.cpu().data
+            weights_list.extend(weighted_preds)
             # all_indices.extend(indices)
 
-        weighted_preds = ner_score*weights[0] + re_score*weights[1]
+        
 
         all_preds = torch.stack(all_preds)
         all_preds = all_preds.view(-1)
