@@ -396,10 +396,9 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
 
                 ner_score = torch.sum(ner_score, dim=(1, 2, 3), keepdim=True)
                 re_score = torch.sum(re_score, dim=(1, 2, 3), keepdim=True)
-                print(ner_score.shape)
-                print(type(ner_score))
-                ner_score = ner_score.squeeze(ner_score)
-                re_score = re_score.squeeze(re_score)
+
+                ner_score = torch.squeeze(ner_score)
+                re_score = torch.squeeze(re_score)
 
                 images = tokenizer(images, return_tensors="pt",
                                   padding='longest',
