@@ -164,7 +164,7 @@ def train_vaal(models, optimizers, labeled_dataloader, unlabeled_dataloader, cyc
     labeled_data = read_data(labeled_dataloader)
     unlabeled_data = read_data(unlabeled_dataloader)
 
-    train_iterations = 1 # int( (args['INCREMENTAL']*cycle+ args['SUBSET']) * args['EPOCHV'] / args['BATCH'] )
+    train_iterations = 100 # int( (args['INCREMENTAL']*cycle+ args['SUBSET']) * args['EPOCHV'] / args['BATCH'] )
     print('Num of Iteration:', str(train_iterations))
     
     for iter_count in range(train_iterations): #2
@@ -447,8 +447,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         all_preds = all_preds.view(-1)
         # need to multiply by -1 to be able to use torch.topk 
         all_preds *= -1
-        print(all_preds)
-        print(weights_list)
+        # print(all_preds)
+        # print(weights_list)
         all_preds = all_preds*weights_list
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
