@@ -357,7 +357,7 @@ if __name__ == '__main__':
             models['backbone'] = train(args, models['backbone'], train_batch, optimizer, BCEloss, dev_batch, rel2idx, ner2idx, test_batch)
             torch.save(models['backbone'], 'predictor-backbone-' + 'cycle-'+str(cycle+1)+'.pth')
             torch.save(models['module'], 'predictor-module-'+'cycle-'+str(cycle+1)+'.pth')
-            arg,models['vae'], models['discriminator'] = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn,weights)
+            arg = query_samples(models, method, train_unlabeled, subset, labeled_set, cycle, args,collate_fn,weights)
 
             new_list = list(torch.tensor(subset)[arg][:30].numpy())
             labeled_set += list(torch.tensor(subset)[arg][-30:].numpy())

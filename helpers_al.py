@@ -378,6 +378,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
 
         model['vae'], model['discriminator']=train_vaal(models,optimizers, labeled_loader, unlabeled_loader, cycle+1, args)
         task_model = models['backbone']
+        vae = model['vae']
+        discriminator = model['discriminator']
         ranker = models['module']        
         all_preds, all_indices,weights_list = [], [], []
 
@@ -456,7 +458,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         torch.save(vae, 'vae-' + 'head' +'cycle-'+str(cycle)+'.pth')
         torch.save(discriminator, 'discriminator-' + 'head' +'cycle-'+str(cycle)+'.pth')
         
-    return arg,model['vae'], model['discriminator']
+        return arg
 
 def read_data(dataloader, labels=True):
     if labels:
