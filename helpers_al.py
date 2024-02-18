@@ -435,8 +435,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
 
             preds = preds.cpu().data
             all_preds.extend(preds)
-            # weighted_preds = ner_score*weights[0] + re_score*weights[1]
-            weighted_preds = ner_score + re_score
+            weighted_preds = ner_score*task_model.w1 + re_score*task_model.w2
+            # weighted_preds = ner_score + re_score
             weighted_preds = weighted_preds.unsqueeze(1)
             weighted_preds = weighted_preds.cpu().data
             weights_list.extend(weighted_preds)

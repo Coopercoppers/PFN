@@ -288,6 +288,9 @@ class PFN(nn.Module):
         self.conv22 = nn.Conv2d(128, 256, kernel_size=2, stride=2)
         self.conv33 = nn.Conv2d(256, 512, kernel_size=2, stride=2)
 
+        self.w1 = nn.Parameter(torch.ones(1))
+        self.w2 = nn.Parameter(torch.ones(1))
+
         if args.embed_mode == 'albert':
             self.tokenizer = AlbertTokenizer.from_pretrained("albert-xxlarge-v1")
             self.bert = AlbertModel.from_pretrained("albert-xxlarge-v1")
@@ -336,6 +339,9 @@ class PFN(nn.Module):
 
 
         h_ner, h_re, h_share = self.feature_extractor(x)
+
+        h_ner = self.w1*h_ner
+        h_re = self.w2*h_re
 
         ner_score = self.ner(h_ner, h_share, mask)
         re_core = self.re(h_re, h_share, mask)
