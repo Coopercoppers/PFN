@@ -382,6 +382,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         discriminator = model['discriminator']
         ranker = models['module']        
         all_preds, all_indices,weights_list = [], [], []
+        variance_list = []
 
         for data in unlabeled_loader:                       
             images = data[0]
@@ -436,7 +437,7 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
             preds = preds.cpu().data
             all_preds.extend(preds)
             weighted_preds = ner_score*task_model.w1 + re_score*task_model.w2
-            
+
             mean_vec = (ner_score + re_score)/2
             variance = torch.square(ner_score-mean_vec)+ torch.square(re_score-mean_vec)
             variance = variance/2
