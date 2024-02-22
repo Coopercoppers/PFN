@@ -436,14 +436,22 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
             preds = preds.cpu().data
             all_preds.extend(preds)
             weighted_preds = ner_score*task_model.w1 + re_score*task_model.w2
+            
+            mean_vec = (ner_score + re_score)/2
+            variance = torch.square(ner_score-mean_vec)+ torch.square(re_score-mean_vec)
+            variance = variance/2
+            variance = variance.unsqueeze(1)
+            variance = variance.cpu().data
+            variance_list.extend(variance)
             # weighted_preds = ner_score + re_score
             weighted_preds = weighted_preds.unsqueeze(1)
             weighted_preds = weighted_preds.cpu().data
             weights_list.extend(weighted_preds)
             # all_indices.extend(indices)
 
-        
+        variance_list=torch.stack(variance_list)
         weights_list = torch.stack(weights_list)
+        variance_list = variance_list.view(-1)
         weights_list = weights_list.view(-1)
         all_preds = torch.stack(all_preds)
         all_preds = all_preds.view(-1)
@@ -452,6 +460,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
         # print(all_preds)
         # print(weights_list)
         all_preds = all_preds*weights_list
+        all_preds = all_preds + variance_list
+        # print(variance_list)
         # select the points which the discriminator things are the most likely to be unlabeled
         _, arg = torch.sort(all_preds) 
         #saved_history/models/
