@@ -436,6 +436,8 @@ def query_samples(model, method, data_unlabeled, subset, labeled_set, cycle, arg
 
             preds = preds.cpu().data
             all_preds.extend(preds)
+            ner_score = ner_score*torch.log2(ner_score)
+            re_score = re_score*torch.log2(re_score)
             weighted_preds = ner_score*task_model.w1 + re_score*task_model.w2
 
             mean_vec = (ner_score + re_score)/2
