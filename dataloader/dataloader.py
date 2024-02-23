@@ -172,13 +172,13 @@ def ade_and_sci_preprocess(data, dataset):
 def dataloader(args, ner2idx, rel2idx):
     path = args.data
 
-    if args.data == "ADE":
+    if args.data == "/home/gamma/home/gamma/Workbenches/PFNHarshcopy/data/ADE":
         train_raw_data = json_load(path, "train_triples.json")
         test_data = json_load(path, "test_triples.json")
         random.shuffle(train_raw_data)
         split = int(0.15 * len(train_raw_data))
-        train_data = train_raw_data[split:]
-        dev_data = train_raw_data[:split]
+        train_data = train_raw_data
+        dev_data = train_raw_data
     
     elif args.data == "ACE2004":
         train_raw_data = json_loads(path, "train_triples.json")
