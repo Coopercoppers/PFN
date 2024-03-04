@@ -349,7 +349,7 @@ if __name__ == '__main__':
         triple_best = None
         entity_best = None
         method = 'TA-VAAL'
-        for cycle in range(7):
+        for cycle in range(9):
             print(cycle)
             random.shuffle(unlabeled_set)
             subset = unlabeled_set[:50]
