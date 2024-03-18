@@ -280,9 +280,9 @@ if __name__ == '__main__':
     saved_file = save_results(output_dir + "/" + args.output_file + ".txt", header="# epoch \t train_loss \t  dev_loss \t test_loss \t dev_ner \t dev_rel \t test_ner \t test_rel")
     model_file = args.output_file + ".pt"
        
-    with open(args.data + "/ner2idx.json", "r") as f:
+    with open("data/" + args.data + "/ner2idx.json", "r") as f:
         ner2idx = json.load(f)
-    with open(args.data + "/rel2idx.json", "r") as f:
+    with open("data/" + args.data + "/rel2idx.json", "r") as f:
         rel2idx = json.load(f)
 
     train_dataset, test_dataset, dev_dataset, collate_fn, train_unlabeled = dataloader(args, ner2idx, rel2idx)
