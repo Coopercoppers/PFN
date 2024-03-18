@@ -170,28 +170,15 @@ def ade_and_sci_preprocess(data, dataset):
 
 
 def dataloader(args, ner2idx, rel2idx):
-    path = args.data
+    path = "data/" + args.data
 
-    if args.data == "/home/gamma/home/gamma/Workbenches/PFNHarshcopy/data/ADE":
+    if args.data == "ADE":
         train_raw_data = json_load(path, "train_triples.json")
         test_data = json_load(path, "test_triples.json")
         random.shuffle(train_raw_data)
         split = int(0.15 * len(train_raw_data))
         train_data = train_raw_data
         dev_data = train_raw_data
-    
-    elif args.data == "ACE2004":
-        train_raw_data = json_loads(path, "train_triples.json")
-        test_data = json_loads(path, "test_triples.json")
-        random.shuffle(train_raw_data)
-        split = int(0.15 * len(train_raw_data))
-        train_data = train_raw_data[split:]
-        dev_data = train_raw_data[:split]
-    
-    elif args.data == "ACE2005":
-        train_data = json_loads(path, 'train_triples.json')
-        test_data = json_loads(path, 'test_triples.json')
-        dev_data = json_loads(path, 'dev_triples.json')
 
     else:
         train_data = json_load(path, 'train_triples.json')
@@ -199,22 +186,15 @@ def dataloader(args, ner2idx, rel2idx):
         dev_data = json_load(path, 'dev_triples.json')
 
 
-
-    if args.data=="ACE2005" or args.data=="ACE2004":
-        train_data = ace_preprocess(train_data)
-        test_data = ace_preprocess(test_data)
-        dev_data = ace_preprocess(dev_data)
-
-
-    else :# args.data=="ADE" or args.data=="SCIERC" or args.data=="CONLL04":
+    if args.data=="ADE" or args.data=="SCIERC":
         train_data = ade_and_sci_preprocess(train_data, args.data)
         test_data = ade_and_sci_preprocess(test_data, args.data)
         dev_data = ade_and_sci_preprocess(dev_data, args.data)
 
-    # else:
-    #     train_data = nyt_and_webnlg_preprocess(train_data)
-    #     test_data = nyt_and_webnlg_preprocess(test_data)
-    #     dev_data = nyt_and_webnlg_preprocess(dev_data)
+    else:
+        train_data = nyt_and_webnlg_preprocess(train_data)
+        test_data = nyt_and_webnlg_preprocess(test_data)
+        dev_data = nyt_and_webnlg_preprocess(dev_data)
 
 
     train_dataset = dataprocess(train_data, args.embed_mode, args.max_seq_len)
@@ -222,23 +202,5 @@ def dataloader(args, ner2idx, rel2idx):
     dev_dataset = dataprocess(dev_data, args.embed_mode, args.max_seq_len)
     collate_fn = collater(ner2idx, rel2idx)
     train_unlabeled = dataprocess(train_data, args.embed_mode, args.max_seq_len)
-    
-    # adden = 50 # roughly no_train/cycles
-    # no_train = len(train_dataset)
-    # ADDENDUM = adden
-    # NUM_TRAIN = no_train
-    # indices = list(range(NUM_TRAIN))
-    # random.shuffle(indices)
-
-    # labeled_set = indices[:ADDENDUM]
-    # unlabeled_set = [x for x in indices if x not in labeled_set]
-
-    # train_batch = DataLoader(dataset=train_dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(labeled_set), 
-    #                             shuffle=True, pin_memory=True, collate_fn=collate_fn)
-    # test_batch = DataLoader(dataset=test_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
-    # dev_batch = DataLoader(dataset=dev_dataset, batch_size=args.eval_batch_size, shuffle=False, pin_memory=True, collate_fn=collate_fn)
-    # train_unlabeled = DataLoader(dataset=train_dataset, batch_size=args.batch_size, shuffle=True, pin_memory=True, collate_fn=collate_fn)
-
-    
 
     return train_dataset, test_dataset, dev_dataset, collate_fn, train_unlabeled
